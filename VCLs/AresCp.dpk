@@ -1,0 +1,53 @@
+package AresCp;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS OFF}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  designide;
+
+contains
+  BGImPanel in 'BGImPanel.pas',
+  CometBtnEdit in 'CometBtnEdit.pas',
+  CometHint in 'CometHint.pas',
+  CometPageView in 'CometPageView.pas',
+  CometTopicPnl in 'CometTopicPnl.pas',
+  CometTrack in 'CometTrack.pas',
+  CometTrees in 'CometTrees.pas',
+  CometTreesReg in 'CometTreesReg.pas',
+  CometVerInfo in 'CometVerInfo.pas',
+  FolderBrowse in 'FolderBrowse.pas',
+  mPlayerPanel in 'mPlayerPanel.pas',
+  uTrayIcon in 'uTrayIcon.pas',
+  VCHeaderPopup in 'VCHeaderPopup.pas',
+  WinSplit in 'WinSplit.pas',
+  XPbutton in 'XPbutton.pas',
+  XPMan in 'XPMan.pas';
+
+end.
