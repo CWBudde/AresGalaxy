@@ -1,0 +1,26 @@
+Requirements:
+
+Compiler/IDE: 
+ Borland Delphi 7  
+ http://www.borland.com
+
+
+Required Libraries:
+ DSPack   
+ http://www.progdigy.com/modules.php?name=DSPack
+
+ Tnt Delphi UNICODE Controls Project   
+ http://www.tntware.com/delphicontrols/unicode/
+ http://www.axolot.com/TNT/
+ http://www.yunqa.de/delphi/doku.php/products/tntunicodecontrols/index
+
+
+Additional VCL:
+ ARES_VCLs
+ http://sourceforge.net/projects/aresgalaxy/files/aresgalaxy/Ares_VCLs/Ares_VCLs_011713.zip/download
+
+
+
+
+Project's HomePage:  
+ http://aresgalaxy.sourceforge.net

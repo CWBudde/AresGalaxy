@@ -124,7 +124,7 @@ type
   published
     property Wrappable: Boolean read FWrappable write SetWrappable;
     property ColorFrame: TColor read FColorFrame write SetColorFrame;
-    property HideTabsOnSingle: Boolean read FHideTabsOnSigle write FHideTabsOnSigle default false;
+    property HideTabsOnSingle: Boolean read FHideTabsOnSigle write FHideTabsOnSigle default False;
     property TabsVisible: Boolean read FTabsVisible write SetTabsVisible;
     property SwitchOnDown: Boolean read FSwitchOnDown write FSwitchOnDown;
     property DrawMargin: Boolean read FDrawMargin write SetDrawMargin;
@@ -382,7 +382,7 @@ begin
     Exit;
 
   Pnl := FPanels[panelIndex];
-  proceed := true;
+  proceed := True;
 
   if notify and Assigned(FOnPanelClose) then
     FOnPanelClose(Self,Pnl,proceed);
@@ -410,7 +410,7 @@ begin
     ActivePage := 0;
 
   if FHideTabsOnSigle and (length(FPanels)=1) then
-    TabsVisible := false;
+    TabsVisible := False;
 
   Resize;
 end;
@@ -435,7 +435,7 @@ begin
       ShouldRedraw := (csDown in Pnl.BtnState);
       exclude(Pnl.BtnState,csDown);
       if ShouldRedraw then PaintButton(Pnl);
-      // if Pnl.Panel<>nil then Pnl.Panel.visible := false;
+      // if Pnl.Panel<>nil then Pnl.Panel.visible := False;
     end
     else
     begin
@@ -447,10 +447,10 @@ begin
           Pnl.Panel.Top := (Integer(FTabsVisible)*(FButtonsHeight*FNumRows))+Integer(FDrawMargin)
         else
           Pnl.Panel.Top := (Integer(FTabsVisible)*(FButtonsHeight))+Integer(FDrawMargin);
-        Pnl.Panel.Left := 0;//Integer(FDrawMargin);
-        Pnl.Panel.Width := ClientWidth;//-(Integer(FDrawMargin)*2);
+        Pnl.Panel.Left := 0; //Integer(FDrawMargin);
+        Pnl.Panel.Width := ClientWidth; //-(Integer(FDrawMargin)*2);
         Pnl.Panel.Height := clientheight-Pnl.Panel.Top;
-        Pnl.Panel.visible := true;
+        Pnl.Panel.visible := True;
         FActivePage := i;
       end;
 
@@ -466,7 +466,7 @@ begin
    Pnl := FPanels[i];
    if not (csDown in Pnl.BtnState) then
      if Pnl.Panel<>nil then
-       Pnl.Panel.visible := false;
+       Pnl.Panel.visible := False;
   end;
 
   if FWrappable then Resize;  // got to take care of paintRow# assignment
@@ -609,7 +609,7 @@ var
   Size: TSize;
   OffsetX: Integer;
 begin
-  Result := true;
+  Result := True;
 
   FNumRows := 1;
   OffsetX := FButtonsLeft;
@@ -649,7 +649,7 @@ begin
 
     if OffsetX>ClientWidth then
     begin
-      Result := false;
+      Result := False;
       if FWrappable then break; //Resize tabsWrappable will take care of everything
     end;
   end;
@@ -671,8 +671,8 @@ begin
         Pnl.Panel.Top := (Integer(FTabsVisible)*(FButtonsHeight*FNumRows))+Integer(FDrawMargin)
       else
         Pnl.Panel.Top := (Integer(FTabsVisible)*(FButtonsHeight))+Integer(FDrawMargin);
-      Pnl.Panel.Left := 0;//Integer(FDrawMargin);
-      Pnl.Panel.Width := ClientWidth;//-(Integer(FDrawMargin)*2);
+      Pnl.Panel.Left := 0; //Integer(FDrawMargin);
+      Pnl.Panel.Width := ClientWidth; //-(Integer(FDrawMargin)*2);
       Pnl.Panel.Height := clientheight-Pnl.Panel.Top;
     end;
   end;
@@ -790,7 +790,7 @@ begin
     Pnl := FPanels[i];
     if (csDown in Pnl.BtnState) then
     begin
-      Result := true;
+      Result := True;
       Exit;
     end;
   end;
@@ -817,7 +817,7 @@ begin
       exclude(Pnl.BtnState,csHover);
       Exclude(Pnl.BtnState,csClicked);
       // if not (csClicked in Pnl.BtnState) then begin
-      //  if Pnl.Panel<>nil then Pnl.Panel.Visible := false;
+      //  if Pnl.Panel<>nil then Pnl.Panel.Visible := False;
       // end;
       if ShouldRedraw then
         PaintButton(Pnl);
@@ -831,7 +831,7 @@ begin
       exclude(Pnl.BtnState,csHover);
       Exclude(Pnl.BtnState,csClicked);
       // if not (csClicked in Pnl.BtnState) then begin
-      // if Pnl.Panel<>nil then Pnl.Panel.Visible := false;
+      // if Pnl.Panel<>nil then Pnl.Panel.Visible := False;
       // end;
       if ShouldRedraw then PaintButton(Pnl);
       continue;
@@ -888,7 +888,7 @@ begin
       exclude(Pnl.BtnState,csClicked);
       if ShouldRedraw or shouldRedrawClose then
         PaintButton(Pnl);
-      //if Pnl.Panel<>nil then Pnl.Panel.Visible := false;
+      //if Pnl.Panel<>nil then Pnl.Panel.Visible := False;
       continue;
     end;
 
@@ -901,7 +901,7 @@ begin
       exclude(Pnl.BtnState,csClicked);
       if ShouldRedraw or shouldRedrawClose then
         PaintButton(Pnl);
-      //if Pnl.Panel<>nil then Pnl.Panel.Visible := false;
+      //if Pnl.Panel<>nil then Pnl.Panel.Visible := False;
       continue;
     end;
 
@@ -937,8 +937,8 @@ var
   overCloseButton,shouldRedrawClose: Boolean;
 begin
   //if y>FButtonsHeight then Exit;
-  overCloseButton := false;
-  shouldRedrawClose := false;
+  overCloseButton := False;
+  shouldRedrawClose := False;
 
   for i := 0 to High(FPanels) do
   begin
@@ -950,7 +950,7 @@ begin
       if Pnl.HasCloseButton then
       begin
         if (bsHover in Pnl.CloseBtnState) then
-          ShouldRedraw := true;
+          ShouldRedraw := True;
         exclude(Pnl.CloseBtnState,bsHover);
       end;
       exclude(Pnl.BtnState,csHover);
@@ -965,7 +965,7 @@ begin
       if Pnl.HasCloseButton then
       begin
         if (bsHover in Pnl.CloseBtnState) then
-          ShouldRedraw := true;
+          ShouldRedraw := True;
         exclude(Pnl.CloseBtnState,bsHover);
       end;
       exclude(Pnl.BtnState,csHover);
@@ -978,13 +978,13 @@ begin
      if ((x>=Pnl.rcCloseButton.left) and (x<Pnl.rcCloseButton.right) and
         (y>=Pnl.rcCloseButton.top) and (y<=Pnl.rcCloseButton.Bottom)) then
      begin
-       overCloseButton := true;
+       overCloseButton := True;
        shouldRedrawClose := not (bsHover in Pnl.CloseBtnState);
        Include(Pnl.CloseBtnState,bsHover);
      end
      else
      begin
-       overCloseButton := false;
+       overCloseButton := False;
        shouldRedrawClose := (bsHover in Pnl.CloseBtnState);
        exclude(Pnl.CloseBtnState,bsHover);
      end;
@@ -1010,10 +1010,10 @@ begin
   FOnPanelClose := nil;
 
   FNumRows := 1;
-  FWrappable := false;
-  FTabsVisible := true;
-  FHideTabsOnSigle := false;
-  FDrawMargin := false;
+  FWrappable := False;
+  FTabsVisible := True;
+  FHideTabsOnSigle := False;
+  FDrawMargin := False;
   FButtonsTopHitPoint := 4;
   FHorizBtnSpacing := 4;
   FActivePage := 0;
@@ -1026,7 +1026,7 @@ begin
   FCloseButtonTopMargin := 10;
   FCloseButtonWidth := 13;
   FCloseButtonHeight := 13;
-  FSwitchOnDown := true;
+  FSwitchOnDown := True;
 
   SetLength(FPanels,0);
 end;

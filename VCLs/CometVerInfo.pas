@@ -77,7 +77,7 @@ implementation
 constructor TCmtVerNfo.Create(AOwner: TComponent);
 var
   Lung: Integer;
-  buffer: array[0..MAX_PATH - 1] of WideChar;
+  buffer: array [0..MAX_PATH - 1] of WideChar;
   widstr: WideString;
 begin
   inherited Create(AOwner);

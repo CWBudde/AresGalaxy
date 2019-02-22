@@ -108,7 +108,7 @@ begin
   Width := 120;
   Height := 50;
   FColorBg := clbtnface;
-  FBackBitmap := graphics.tbitmap.create;
+  FBackBitmap := graphics.TBitmap.create;
   FBackBitmap.pixelformat := pf24Bit;
 
   FOnClick := nil;
@@ -118,7 +118,7 @@ end;
 
 destructor TXPbutton.Destroy;
 begin
-  FBackBitmap.free;
+  FBackBitmap.Free;
   FCaption := '';
   inherited Destroy;
 end;
@@ -177,7 +177,7 @@ begin
       FXPButtonOnDraw(self,FBackBitmap.Canvas,r,FState,should_continue);
     end
     else
-      should_continue := true;
+      should_continue := True;
 
     if should_continue then
     begin
@@ -474,7 +474,7 @@ begin
       Inc(pch);
       c2 := Byte(pch^);
       Inc(pch);
-      Word(pwc^)  :=
+      Word(pwc^) := 
         (Word(ch and $0F) shl 12) or
         (Word(c1 and $3F) shl 6) or
         (c2 and $3F);

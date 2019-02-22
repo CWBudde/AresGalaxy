@@ -129,12 +129,12 @@ type
     uFlags: UINT;
     uCallbackMessage: UINT;
     hIcon: HICON;
-    szTip: array[0..127] of AnsiChar;  // Previously 64 chars, now 128
+    szTip: array [0..127] of AnsiChar;  // Previously 64 chars, now 128
     dwState: DWORD;
     dwStateMask: DWORD;
-    szInfo: array[0..255] of AnsiChar;
+    szInfo: array [0..255] of AnsiChar;
     TimeoutOrVersion: TTimeoutOrVersion;
-    szInfoTitle: array[0..63] of AnsiChar;
+    szInfoTitle: array [0..63] of AnsiChar;
     dwInfoFlags: DWORD;
 {$IFDEF _WIN32_IE_600}
     guidItem: TGUID;  // Reserved for WinXP; define _WIN32_IE_600 if needed
@@ -180,7 +180,7 @@ type
     procedure IconChanged(Sender: TObject);
     function IsWinNT: Boolean;
   protected
-    IconDataW: TNotifyIconDataW;//TNotifyIconDataEx;       // Data of the tray icon wnd.
+    IconDataW: TNotifyIconDataW; //TNotifyIconDataEx;       // Data of the tray icon wnd.
     IconDataA: TNotifyIconDataEx;       // Data of the tray icon wnd.
     procedure Loaded; override;
     function LoadDefaultIcon: Boolean; virtual;
@@ -382,7 +382,7 @@ begin
     // Create new handler
     TrayIconHandler := TTrayIconHandler.Create;
 
-  TrayIconHandler.cool:=value;
+  TrayIconHandler.cool := value;
   TrayIconHandler.Add;
 end;
 
@@ -405,7 +405,7 @@ end;
 constructor TTrayIcon.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  WinNT:=isWinNT;
+  WinNT := isWinNT;
 
   AddTrayIcon(self);               // Container management
   FIconID := Cardinal(Self); // Use Self object pointer as ID
@@ -420,7 +420,7 @@ begin
   if WinNT then
   begin
      FillChar(IconDataW, SizeOf(IconDataW), 0);
-     IconDataW.cbSize := SizeOf(TNotifyIconDataW);//TNotifyIconDataEx);
+     IconDataW.cbSize := SizeOf(TNotifyIconDataW); //TNotifyIconDataEx);
     { IconData.hWnd points to procedure to receive callback messages from the icon.
       We set it to our TrayIconHandler instance. }
      IconDataW.Wnd := TrayIconHandler.FHandle;
@@ -429,18 +429,18 @@ begin
     // We want icon, message handling, and tooltips by default
      IconDataW.uFlags := NIF_ICON + NIF_MESSAGE + NIF_TIP;
     // Message to send to IconData.hWnd when event occurs
-    IconDataW.uCallbackMessage:=WM_TRAYNOTIFY;
-    Fhandle:=IconDataW.Wnd;
+    IconDataW.uCallbackMessage := WM_TRAYNOTIFY;
+    Fhandle := IconDataW.Wnd;
   end
   else
   begin
       FillChar(IconDataA, SizeOf(TnotifyIconDataW), 0);
       IconDataA.cbSize := SizeOf(TnotifyIconDataEx);
-      IconDataA.hWnd:= TrayIconHandler.FHandle;
+      IconDataA.hWnd :=  TrayIconHandler.FHandle;
       IconDataA.uId := FIconID;
       IconDataA.uFlags := NIF_ICON + NIF_MESSAGE + NIF_TIP;
-      IconDataA.uCallbackMessage:=WM_TRAYNOTIFY;
-    Fhandle:=IconDataA.hWnd;
+      IconDataA.uCallbackMessage := WM_TRAYNOTIFY;
+    Fhandle := IconDataA.hWnd;
   end;
 
   SetDesignPreview(false);
@@ -614,10 +614,10 @@ begin
 
       if (FHint <> '') and (FShowHint) then begin
        if length(Fhint)>63 then delete(FHint,64,length(FHint));
-        for i:=0 to 63 do icondataW.szTip[i]:=#0;
+        for i := 0 to 63 do icondataW.szTip[i] := #0;
          move(Fhint[1],icondataW.sztip,length(Fhint)*sizeof(widechar));
       end else begin
-        for i:=0 to 63 do icondataW.szTip[i]:=#0;
+        for i := 0 to 63 do icondataW.szTip[i] := #0;
       end;
       Result := True;
     end;
@@ -636,14 +636,14 @@ begin
 
       if (FHint <> '') and (FShowHint) then begin
        //if length(Fhint)>63 then delete(FHint,64,length(FHint));
-        //for i:=0 to 63 do icondataA.szTip[i]:=#0;
-        str:=FHint;
+        //for i := 0 to 63 do icondataA.szTip[i] := #0;
+        str := FHint;
         StrLCopy(IconDataA.szTip, PAnsiChar(String(str)), SizeOf(IconDataA.szTip) - 1);
-        //Fhint:=strpas(str);
+        //Fhint := strpas(str);
         //move(str[1],icondataA.szTip,length(str));
       end else begin
        IconDataA.szTip := '';
-       // for i:=0 to 63 do icondataA.szTip[i]:=#0;  //azzeriamo
+       // for i := 0 to 63 do icondataA.szTip[i] := #0;  //azzeriamo
       end;
       Result := True;
     end;
@@ -658,9 +658,9 @@ begin
   begin
       if InitIcon then begin
          if WinNT then begin
-          if @Shell_NotifyIconW<>nil then Result:=Shell_NotifyIconW(NIM_ADD,@IconDataW);
+          if @Shell_NotifyIconW<>nil then Result := Shell_NotifyIconW(NIM_ADD,@IconDataW);
          end else begin
-          if @Shell_NotifyIcon<>nil then Result:=Shell_NotifyIcon(NIM_ADD,@IconDataA);
+          if @Shell_NotifyIcon<>nil then Result := Shell_NotifyIcon(NIM_ADD,@IconDataA);
          end;
       end;
   end;
@@ -674,9 +674,9 @@ begin
   begin
     if InitIcon then begin
       if WinNT then begin
-       if @Shell_NotifyIconW<>nil then Result:=Shell_NotifyIconW(NIM_DELETE, @IconDataW);
+       if @Shell_NotifyIconW<>nil then Result := Shell_NotifyIconW(NIM_DELETE, @IconDataW);
       end else begin
-       if @Shell_NotifyIcon<>nil then Result:=Shell_NotifyIcon(NIM_DELETE, @IconDataA);
+       if @Shell_NotifyIcon<>nil then Result := Shell_NotifyIcon(NIM_DELETE, @IconDataA);
       end;
     end;
   end;
@@ -688,9 +688,9 @@ begin
   Result := False;    
   if InitIcon then begin
      if WinNT then begin
-       if @Shell_NotifyIconW<>nil then Result:=Shell_NotifyIconW(NIM_MODIFY, @IconDataW);
+       if @Shell_NotifyIconW<>nil then Result := Shell_NotifyIconW(NIM_MODIFY, @IconDataW);
      end else begin
-       if @Shell_NotifyIcon<>nil then Result:=Shell_NotifyIcon(NIM_MODIFY, @IconDataA);
+       if @Shell_NotifyIcon<>nil then Result := Shell_NotifyIcon(NIM_MODIFY, @IconDataA);
      end;
   end;
 end;
@@ -797,7 +797,7 @@ begin
   ovi.dwOSVersionInfoSize := SizeOf(TOSVersionInfo);
   if GetVersionEx(ovi) then
   begin
-    rc := (ovi.dwPlatformId = VER_PLATFORM_WIN32_NT) ;//and (ovi.dwMajorVersion <= 4);
+    rc := (ovi.dwPlatformId = VER_PLATFORM_WIN32_NT) ; //and (ovi.dwMajorVersion <= 4);
   end;
   Result := rc;
 end;
@@ -847,14 +847,14 @@ begin
 end;
 
 initialization
-  Shell_NotifyIcon:=nil;
-  Shell_NotifyIconW:=nil;
+  Shell_NotifyIcon := nil;
+  Shell_NotifyIconW := nil;
 
   shellwd := LoadLibrary('shell32.dll');
   if shellwd<>0 then
   begin
-    Shell_NotifyIcon:=GetProcAddress(shellwd,'Shell_NotifyIconA');
-    Shell_NotifyIconW:=GetProcAddress(shellwd,'Shell_NotifyIconW');
+    Shell_NotifyIcon := GetProcAddress(shellwd,'Shell_NotifyIconA');
+    Shell_NotifyIconW := GetProcAddress(shellwd,'Shell_NotifyIconW');
   end;
 
   // Get shell version

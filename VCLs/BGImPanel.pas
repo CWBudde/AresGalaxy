@@ -263,7 +263,7 @@ begin
   inherited Create(AComponent);
   DoubleBuffered := True;
 
-  FDrawHeader := false;
+  FDrawHeader := False;
   FHeaderColor := color;
   FHeaderFont := font;
   FHeaderHeight := 20;
@@ -273,15 +273,15 @@ begin
 
   ControlStyle := ControlStyle + [csOpaque];
 
-  FOwnerDraw := false;
+  FOwnerDraw := False;
   FheaderFont := font;
 
   FTipoGradiente := TGNone;
   FColoreGradienteStart := $00F6F5F3;
   FColoreGradienteEnd := $00D6EAEE;
 
-  FXPRoundCenter := false;
-  FXPRoundCenterHeader := false;
+  FXPRoundCenter := False;
+  FXPRoundCenterHeader := False;
   FXPRoundLeft := 10;
   FXPRoundTop := 10;
   FXPRoundWidth := Width-20;
@@ -320,7 +320,7 @@ end;
 
 procedure TBgImPanel.Paint;
 const
-  Alignments: array[TAlignment] of Longint = (DT_LEFT, DT_RIGHT, DT_CENTER);
+  Alignments: array [TAlignment] of Longint = (DT_LEFT, DT_RIGHT, DT_CENTER);
 var
   i,j,k: Integer;
   x,y: Integer;

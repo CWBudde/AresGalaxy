@@ -7,26 +7,25 @@ uses
   ShockwaveEx, Messages, ActiveX, Dialogs, Graphics;
 
 type
+  TMoviesLayout=(mlSingle, mlMatrixLR, mlMatrixTB, mlDiagonal);
 
-TMoviesLayout=(mlSingle, mlMatrixLR, mlMatrixTB, mlDiagonal);
+  TShockwaveFlashList = class;
 
-TShockwaveFlashList=Class;
-
-TSWFChildren=Class(TShockwaveFlashEx)
+  TSWFChildren = class(TShockwaveFlashEx)
   private
-    fHost: TShockwaveFlashList;
+    FHost: TShockwaveFlashList;
   public
-    constructor Create(AOwner: TComponent; AHost:TShockwaveFlashList); virtual;
+    constructor Create(AOwner: TComponent; AHost: TShockwaveFlashList); virtual;
   protected
-    procedure WndProc(var Message:TMessage); override;
+    procedure WndProc(var Message: TMessage); override;
   published
-    property Host: TShockwaveFlashList read fHost write fHost;
+    property FHost: TShockwaveFlashList read FHost write FHost;
 end;
 
-TSWFItem=Class(TCollectionItem)
+  TSWFItem = class(TCollectionItem)
   private
-    fSWF: TSWFChildren;
-    fSWFName: string;
+    FSWF: TSWFChildren;
+    FSWFName: string;
     procedure SetFileName(const Value: TFileName);
     function GetFileName: TFileName;
     procedure SetName(const Value: TComponentName);
@@ -36,13 +35,13 @@ TSWFItem=Class(TCollectionItem)
     destructor Destroy; override;
   published
     property FileName: TFileName read GetFileName write SetFileName;
-    property SWF: TSWFChildren read fSWF write fSWF;
+    property SWF: TSWFChildren read FSWF write FSWF;
     property Name: TComponentName read GetName write SetName stored False;
-end;
+  end;
 
-TSWFCollection=Class(TCollection)
+  TSWFCollection = class(TCollection)
   private
-    fSWFList: TShockwaveFlashList;
+    FSWFList: TShockwaveFlashList;
     function GetItem(Index: Integer): TSWFItem;
     procedure SetItem(Index: Integer; const Value: TSWFItem);
   protected
@@ -53,29 +52,29 @@ TSWFCollection=Class(TCollection)
     function Add: TSWFItem;
     procedure Delete(Index: Integer);
     property Items[Index: Integer]: TSWFItem read GetItem write SetItem; default;
-end;
+  end;
 
-TShockwaveFlashList = class(TWinControl)
+  TShockwaveFlashList = class(TWinControl)
   private
-    fItems: TSWFCollection;
-    fItemIndex: integer;
-    Host: TComponent;
-    fCurentMovie: TShockwaveFlashEx;
-    fLockMouseClick: boolean;
-    fQuality: Integer;
-    fScaleMode: Integer;
-    fAlignMode: Integer;
-    fBackgroundColor: TColor;
-    fMenu: boolean;
-    fAllowFullScreen:Boolean;
-    fMoviesLayout: TMoviesLayout;
-    fMovieWidthToHeight: integer;
-    fCountForLayout: integer;
-    fKeepMoviesSize: boolean;
-    fMoviesWidth: integer;
-    fMoviesHeight: integer;
-    fPlaying: boolean;
-    fGleam: integer;
+    FItems: TSWFCollection;
+    FItemIndex: integer;
+    FHost: TComponent;
+    FCurentMovie: TShockwaveFlashEx;
+    FLockMouseClick: boolean;
+    FQuality: Integer;
+    FScaleMode: Integer;
+    FAlignMode: Integer;
+    FBackgroundColor: TColor;
+    FMenu: boolean;
+    FAllowFullScreen: Boolean;
+    FMoviesLayout: TMoviesLayout;
+    FMovieWidthToHeight: integer;
+    FCountForLayout: integer;
+    FKeepMoviesSize: boolean;
+    FMoviesWidth: integer;
+    FMoviesHeight: integer;
+    FPlaying: boolean;
+    FGleam: integer;
     procedure SetItems(const Value: TSWFCollection);
     procedure SetItem(const Value: integer);
     procedure SetLockMouseClick(const Value: boolean);
@@ -95,16 +94,16 @@ TShockwaveFlashList = class(TWinControl)
     procedure SetGleam(const Value: integer);
   protected
     procedure LoadFromItems;
-    procedure WndProc(var Message:TMessage); override;
+    procedure WndProc(var Message: TMessage); override;
     function TColorToSWFColor(Value: TColor): integer;
-    function MessageSwfNeed(SWF:TSWFChildren; Value: TMessage): boolean; virtual;
+    function MessageSwfNeed(SWF: TSWFChildren; Value: TMessage): boolean; virtual;
   public
-    property CurentMovie: TShockwaveFlashEx read fCurentMovie default nil;
+    property CurentMovie: TShockwaveFlashEx read FCurentMovie default nil;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure SetZoomRect(left: Integer; top: Integer; right: Integer; bottom: Integer);
     procedure Zoom(factor: SYSINT);
-    procedure Pan(x: Integer; y: Integer; mode: SYSINT);
+    procedure Pan(x, y: Integer; mode: SYSINT);
     procedure Play;
     procedure Stop;
     procedure Back;
@@ -135,31 +134,32 @@ TShockwaveFlashList = class(TWinControl)
     property PopupMenu;
     property ShowHint;
     property Visible;
-    property Items: TSWFCollection read fItems write SetItems;
-    property ItemIndex: integer read fItemIndex write SetItem default 0;
-    property LockMouseClick: boolean read fLockMouseClick write SetLockMouseClick stored false;
-    property Quality: Integer read fQuality write SetQuality default 0;
-    property Playing: boolean read fPlaying write SetPlaying stored true;
-    property ScaleMode: Integer read fScaleMode write SetScaleMode default 0;
-    property AlignMode: Integer read fAlignMode write SetAlignMode default 0;
-    property BackgroundColor: TColor read fBackgroundColor write SetBackgroundColor default clWhite;
-    property Menu: boolean read fMenu write SetMenu stored false;
-    property AllowFullScreen: boolean read fAllowFullScreen write SetAllowFullScreen stored true;
-    property MoviesLayout: TMoviesLayout read fMoviesLayout write SetMoviesLayout default mlSingle;
-    property MovieWidthToHeight: integer read fMovieWidthToHeight write SetMovieWidthToHeight default 100;
-    property CountForLayout: integer read fCountForLayout write SetCountForLayout default 0;
-    property KeepMoviesSize: boolean read fKeepMoviesSize write SetKeepMoviesSize stored false;
-    property MoviesWidth: integer read fMoviesWidth write SetMoviesWidth default 48;
-    property MoviesHeight: integer read fMoviesHeight write SetMoviesHeight default 48;
-    property Gleam: integer read fGleam write SetGleam default 0;    
-end;
+    property Items: TSWFCollection read FItems write SetItems;
+    property ItemIndex: integer read FItemIndex write SetItem default 0;
+    property LockMouseClick: boolean read FLockMouseClick write SetLockMouseClick stored False;
+    property Quality: Integer read FQuality write SetQuality default 0;
+    property Playing: boolean read FPlaying write SetPlaying stored True;
+    property ScaleMode: Integer read FScaleMode write SetScaleMode default 0;
+    property AlignMode: Integer read FAlignMode write SetAlignMode default 0;
+    property BackgroundColor: TColor read FBackgroundColor write SetBackgroundColor default clWhite;
+    property Menu: boolean read FMenu write SetMenu stored False;
+    property AllowFullScreen: boolean read FAllowFullScreen write SetAllowFullScreen stored True;
+    property MoviesLayout: TMoviesLayout read FMoviesLayout write SetMoviesLayout default mlSingle;
+    property MovieWidthToHeight: integer read FMovieWidthToHeight write SetMovieWidthToHeight default 100;
+    property CountForLayout: integer read FCountForLayout write SetCountForLayout default 0;
+    property KeepMoviesSize: boolean read FKeepMoviesSize write SetKeepMoviesSize stored False;
+    property MoviesWidth: integer read FMoviesWidth write SetMoviesWidth default 48;
+    property MoviesHeight: integer read FMoviesHeight write SetMoviesHeight default 48;
+    property Gleam: integer read FGleam write SetGleam default 0;
+  end;
 
 procedure Register;
 
 implementation
 
 
-Uses Types;
+uses
+  Types;
 
 procedure Register;
 begin
@@ -176,34 +176,34 @@ end;
 
 destructor TSWFItem.Destroy;
 begin
-  if (fSWF<>nil) and (csDesigning in fSWF.ComponentState) Then fSWF.Free;
+  if (FSWF<>nil) and (csDesigning in FSWF.ComponentState) Then FSWF.Free;
   inherited;
 end;
 
 function TSWFItem.GetFileName: TFileName;
 begin
-  if fSWF<>nil Then Result:=fSWF.Movie Else Result:='';
+  if FSWF<>nil Then Result := FSWF.Movie Else Result := '';
 end;
 
 function TSWFItem.GetName: TComponentName;
 begin
-  if fSWF<>nil Then Result:=fSWF.Name Else Result:='';
+  if FSWF<>nil Then Result := FSWF.Name Else Result := '';
 end;
 
 procedure TSWFItem.SetFileName(const Value: TFileName);
 begin
-  if fSWF<>nil Then
+  if FSWF<>nil Then
     begin
-      fSWF.EmbedMovie:=false;
-      fSWF.Movie:=Value;
-      fSWF.EmbedMovie:=true;
+      FSWF.EmbedMovie := False;
+      FSWF.Movie := Value;
+      FSWF.EmbedMovie := True;
     end;
 end;
 
 procedure TSWFItem.SetName(const Value: TComponentName);
 begin
-  fSWFName:=Value;
-  if fSWF<>nil Then fSWF.Name:=fSWFName;
+  FSWFName := Value;
+  if FSWF<>nil Then FSWF.Name := FSWFName;
 end;
 
 { TSWFCollection }
@@ -216,7 +216,7 @@ end;
 constructor TSWFCollection.Create(SWFList: TShockwaveFlashList);
 begin
   inherited Create(TSWFItem);
-  fSWFList:=SWFList;
+  FSWFList := SWFList;
 end;
 
 procedure TSWFCollection.Delete(Index: Integer);
@@ -231,7 +231,7 @@ end;
 
 function TSWFCollection.GetOwner: TPersistent;
 begin
-  Result := fSWFList;
+  Result := FSWFList;
 end;
 
 procedure TSWFCollection.SetItem(Index: Integer; const Value: TSWFItem);
@@ -242,50 +242,50 @@ end;
 procedure TSWFCollection.Update(Item: TCollectionItem);
 begin
   inherited Update(Item);
-  fSWFList.Invalidate;
-  fSWFList.LoadFromItems;
+  FSWFList.Invalidate;
+  FSWFList.LoadFromItems;
 end;
 
 { TShockwaveFlashList }
 
 procedure TShockwaveFlashList.Back;
 begin
-  if fCurentMovie<>nil Then fCurentMovie.Back;
+  if FCurentMovie<>nil Then FCurentMovie.Back;
 end;
 
 constructor TShockwaveFlashList.Create(AOwner: TComponent);
 begin
-  Host:=AOwner;
+  FHost := AOwner;
   inherited Create(AOwner);
   RegisterClass(TSWFChildren);
-  Width:=192;
-  Height:=192;
-  fItems:=TSWFCollection.Create(self);
-  fBackgroundColor:=clWhite;
-  fMoviesWidth:=48;
-  fMoviesHeight:=48;
-  fPlaying:=true;
+  Width := 192;
+  Height := 192;
+  FItems := TSWFCollection.Create(self);
+  FBackgroundColor := clWhite;
+  FMoviesWidth := 48;
+  FMoviesHeight := 48;
+  FPlaying := True;
 end;
 
 function TShockwaveFlashList.CurrentFrame: Integer;
 begin
-  if fCurentMovie<>nil Then Result:=fCurentMovie.CurrentFrame Else Result:=-1;
+  if FCurentMovie<>nil Then Result := FCurentMovie.CurrentFrame Else Result := -1;
 end;
 
 destructor TShockwaveFlashList.Destroy;
 begin
-  fItems.Free;
+  FItems.Free;
   inherited;
 end;
 
 procedure TShockwaveFlashList.Forward;
 begin
-  if fCurentMovie<>nil Then fCurentMovie.Forward;
+  if FCurentMovie<>nil Then FCurentMovie.Forward;
 end;
 
 procedure TShockwaveFlashList.GotoFrame(FrameNum: Integer);
 begin
-  if fCurentMovie<>nil Then fCurentMovie.GotoFrame(FrameNum);
+  if FCurentMovie<>nil Then FCurentMovie.GotoFrame(FrameNum);
 end;
 
 procedure TShockwaveFlashList.LoadFromItems;
@@ -294,26 +294,26 @@ Var i: integer;
     p: pointer;
 begin
 if (csLoading in ComponentState) Then exit;
-if (fItems<>nil) Then
-  for i:=0 to fItems.Count-1 do
+if (FItems<>nil) Then
+  for i := 0 to FItems.Count-1 do
     begin
-      p:=self.FindComponent(fItems.Items[i].fSWFName);
-      if (fItems.Items[i].fSWF=nil) and (p<>nil) Then fItems.Items[i].fSWF:=p;
-      if fItems.Items[i].fSWF=nil Then
+      p := self.FindComponent(FItems.Items[i].FSWFName);
+      if (FItems.Items[i].FSWF=nil) and (p<>nil) Then FItems.Items[i].FSWF := p;
+      if FItems.Items[i].FSWF=nil Then
         begin
-          fItems.Items[i].fSWF:=TSWFChildren.Create(Host,self);
-          SWF:=fItems.Items[i].fSWF;
-          SWF.Parent:=self;
-          SWF.Align:=alClient;
+          FItems.Items[i].FSWF := TSWFChildren.Create(FHost,self);
+          SWF := FItems.Items[i].FSWF;
+          SWF.Parent := self;
+          SWF.Align := alClient;
           SWF.CreateWnd;
-          if i>0 Then SWF.Visible:=false Else SWF.Visible:=true;
-          SWF.Quality:=Quality;
-          SWF.ScaleMode:=ScaleMode;
-          SWF.AlignMode:=AlignMode;
-          SWF.Menu:=Menu;
-          SWF.AllowFullScreen:='true';
-          SWF.BackgroundColor:=TColorToSWFColor(fBackgroundColor);
-          fItems.Items[i].fSWFName:=SWF.Name;
+          if i>0 Then SWF.Visible := false Else SWF.Visible := True;
+          SWF.Quality := Quality;
+          SWF.ScaleMode := ScaleMode;
+          SWF.AlignMode := AlignMode;
+          SWF.Menu := Menu;
+          SWF.AllowFullScreen := 'true';
+          SWF.BackgroundColor := TColorToSWFColor(FBackgroundColor);
+          FItems.Items[i].FSWFName := SWF.Name;
         end;
     end;
   RefreshMoviesLayout;
@@ -321,12 +321,12 @@ end;
 
 procedure TShockwaveFlashList.LoadMovie(layer: SYSINT; const url: WideString);
 begin
-  if fCurentMovie<>nil Then fCurentMovie.LoadMovie(layer,url);
+  if FCurentMovie<>nil Then FCurentMovie.LoadMovie(layer,url);
 end;
 
-function TShockwaveFlashList.MessageSwfNeed(SWF:TSWFChildren; Value: TMessage): boolean;
+function TShockwaveFlashList.MessageSwfNeed(SWF: TSWFChildren; Value: TMessage): boolean;
 begin
-  Result:=false;
+  Result := False;
   Case Value.Msg of
     CM_MOUSELEAVE,
     WM_LBUTTONDOWN,
@@ -335,18 +335,18 @@ begin
     WM_RBUTTONUP,
     WM_MOUSEMOVE,
     WM_MBUTTONDOWN,
-    WM_MBUTTONUP: Result:=true;
+    WM_MBUTTONUP: Result := True;
   end;
 end;
 
 procedure TShockwaveFlashList.Pan(x, y: Integer; mode: SYSINT);
 begin
-  if fCurentMovie<>nil Then fCurentMovie.Pan(x,y,mode);
+  if FCurentMovie<>nil Then FCurentMovie.Pan(x,y,mode);
 end;
 
 procedure TShockwaveFlashList.Play;
 begin
-  if fCurentMovie<>nil Then fCurentMovie.Play;
+  if FCurentMovie<>nil Then FCurentMovie.Play;
 end;
 
 procedure TShockwaveFlashList.RefreshMoviesLayout;
@@ -354,97 +354,97 @@ Var i: integer;
     Kw,Kh,W,H,n,Col,Row: integer;
 begin
   if (csLoading in ComponentState) Then exit;
-  if fItems.Count=0 Then exit;
-  for i:=0 to fItems.Count-1 do
+  if FItems.Count=0 Then exit;
+  for i := 0 to FItems.Count-1 do
     begin
-      fItems.Items[i].SWF.Visible:=false;
-      fItems.Items[i].SWF.CreateWnd;
+      FItems.Items[i].SWF.Visible := False;
+      FItems.Items[i].SWF.CreateWnd;
     end;
-  if fMovieWidthToHeight<=0 Then fMovieWidthToHeight:=100;
-  if (fCountForLayout=0) or (fCountForLayout>fItems.Count) Then n:=fItems.Count-fItemIndex
-    Else n:=fCountForLayout;
-  Case fMoviesLayout of
+  if FMovieWidthToHeight<=0 Then FMovieWidthToHeight := 100;
+  if (FCountForLayout=0) or (FCountForLayout>FItems.Count) Then n := FItems.Count-FItemIndex
+    Else n := FCountForLayout;
+  Case FMoviesLayout of
     mlSingle:
       begin
-        if fItems.Items[ItemIndex].SWF=nil Then exit;
-        With fItems.Items[ItemIndex].SWF do
+        if FItems.Items[ItemIndex].SWF=nil Then exit;
+        With FItems.Items[ItemIndex].SWF do
           begin
-            Align:=alNone;
-            SetBounds(fGleam,fGleam,self.Width-2*fGleam,self.Height-2*fGleam);
-            Visible:=true;
+            Align := alNone;
+            SetBounds(FGleam,FGleam,self.Width-2*FGleam,self.Height-2*FGleam);
+            Visible := True;
             CreateWnd;
           end;
       end;
     mlMatrixLR, mlMatrixTB:
       begin
-        if fKeepMoviesSize Then
+        if FKeepMoviesSize Then
           begin
-            W:=fMoviesWidth;
-            H:=fMoviesHeight;
+            W := FMoviesWidth;
+            H := FMoviesHeight;
           end
          Else
           begin
-            H:=Trunc(Sqrt(Width*Height*100/(fMovieWidthToHeight*n)));
-            W:=Trunc(H*fMovieWidthToHeight/100);
+            H := Trunc(Sqrt(Width*Height*100/(FMovieWidthToHeight*n)));
+            W := Trunc(H*FMovieWidthToHeight/100);
           end;
-        Kw:=Trunc((Width-fGleam)/(W+fGleam));
-        Kh:=Trunc((Height-fGleam)/(H+fGleam));
-        if not fKeepMoviesSize Then
+        Kw := Trunc((Width-FGleam)/(W+FGleam));
+        Kh := Trunc((Height-FGleam)/(H+FGleam));
+        if not FKeepMoviesSize Then
           begin
             if Kw*Kh<n Then Inc(Kw);
             if Kw*Kh<n Then Inc(Kh);
-            H:=Trunc((Height-fGleam*(Kh+1))/Kh);
-            W:=Trunc((Width-fGleam*(Kw+1))/Kw);
-            if W>=Round(H*fMovieWidthToHeight/100) Then W:=Round(H*fMovieWidthToHeight/100)
-                                                   Else H:=Round(W*100/fMovieWidthToHeight);
+            H := Trunc((Height-FGleam*(Kh+1))/Kh);
+            W := Trunc((Width-FGleam*(Kw+1))/Kw);
+            if W>=Round(H*FMovieWidthToHeight/100) Then W := Round(H*FMovieWidthToHeight/100)
+                                                   Else H := Round(W*100/FMovieWidthToHeight);
           end;
-        Col:=1;
-        Row:=1;
-        i:=fItemIndex;
-        While i<=fItemIndex+n-1 do
+        Col := 1;
+        Row := 1;
+        i := FItemIndex;
+        While i<=FItemIndex+n-1 do
           begin
             if Items.Items[i].SWF<>nil Then With Items.Items[i].SWF do
               begin
-                Align:=alNone;
-                SetBounds(W*(Col-1)+fGleam*Col,H*(Row-1)+fGleam*Row,W,H);
-                Visible:=true;
+                Align := alNone;
+                SetBounds(W*(Col-1)+FGleam*Col,H*(Row-1)+FGleam*Row,W,H);
+                Visible := True;
                 CreateWnd;
               end;
-            if fMoviesLayout=mlMatrixLR Then
+            if FMoviesLayout=mlMatrixLR Then
               begin
                 Inc(Col);
-                if Col>Kw Then begin Col:=1; Inc(Row) end;
+                if Col>Kw Then begin Col := 1; Inc(Row) end;
               end;
-            if fMoviesLayout=mlMatrixTB Then
+            if FMoviesLayout=mlMatrixTB Then
               begin
                 Inc(Row);
-                if Row>Kh Then begin Row:=1; Inc(Col) end;
+                if Row>Kh Then begin Row := 1; Inc(Col) end;
               end;
             Inc(i);
           end;
       end;
     mlDiagonal:
       begin
-        if fKeepMoviesSize Then
+        if FKeepMoviesSize Then
           begin
-            W:=fMoviesWidth;
-            H:=fMoviesHeight;
+            W := FMoviesWidth;
+            H := FMoviesHeight;
           end
          Else
           begin
-            W:=Trunc((Width-fGleam*(n+1))/n);
-            H:=Trunc((Height-fGleam*(n+1))/n);
-            if (W*100/fMovieWidthToHeight)<H Then H:=Round(W*100/fMovieWidthToHeight)
-              Else W:=Round(H*fMovieWidthToHeight/100);
+            W := Trunc((Width-FGleam*(n+1))/n);
+            H := Trunc((Height-FGleam*(n+1))/n);
+            if (W*100/FMovieWidthToHeight)<H Then H := Round(W*100/FMovieWidthToHeight)
+              Else W := Round(H*FMovieWidthToHeight/100);
           end;
-        i:=0;
+        i := 0;
         While i<=n-1 do
           begin
-            if Items.Items[i].SWF<>nil Then With Items.Items[i+fItemIndex].SWF do
+            if Items.Items[i].SWF<>nil Then With Items.Items[i+FItemIndex].SWF do
               begin
-                Align:=alNone;
-                SetBounds(W*i+fGleam*(i+1),H*i+fGleam*(i+1),W,H);
-                Visible:=true;
+                Align := alNone;
+                SetBounds(W*i+FGleam*(i+1),H*i+FGleam*(i+1),W,H);
+                Visible := True;
                 CreateWnd;
                 Inc(i);
               end;
@@ -455,151 +455,151 @@ end;
 
 procedure TShockwaveFlashList.Rewind;
 begin
-  if fCurentMovie<>nil Then fCurentMovie.Rewind;
+  if FCurentMovie<>nil Then FCurentMovie.Rewind;
 end;
 
 procedure TShockwaveFlashList.SetAlignMode(const Value: Integer);
 Var i: integer;
 begin
-  fAlignMode:=Value;
-  for i:=0 to fItems.Count-1 do
-    if fItems[i].fSWF<>nil Then fItems[i].fSWF.AlignMode:=Value;
+  FAlignMode := Value;
+  for i := 0 to FItems.Count-1 do
+    if FItems[i].FSWF<>nil Then FItems[i].FSWF.AlignMode := Value;
 end;
 
 procedure TShockwaveFlashList.SetBackgroundColor(const Value: TColor);
 Var i: integer;
 begin
-  fBackgroundColor:=Value;
-  for i:=0 to fItems.Count-1 do
-    if fItems[i].fSWF<>nil Then fItems[i].fSWF.BackgroundColor:=TColorToSWFColor(Value);
+  FBackgroundColor := Value;
+  for i := 0 to FItems.Count-1 do
+    if FItems[i].FSWF<>nil Then FItems[i].FSWF.BackgroundColor := TColorToSWFColor(Value);
 end;
 
 procedure TShockwaveFlashList.SetCountForLayout(const Value: integer);
 begin
-  fCountForLayout:=Value;
+  FCountForLayout := Value;
   RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetGleam(const Value: integer);
 begin
-  fGleam:=Value;
+  FGleam := Value;
   RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetItem(const Value: integer);
 begin
-  if Value>fItems.Count-1 Then exit;
-  fItemIndex:=Value;
-  fCurentMovie:=fItems.Items[Value].fSWF;
+  if Value>FItems.Count-1 Then exit;
+  FItemIndex := Value;
+  FCurentMovie := FItems.Items[Value].FSWF;
   RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetItems(const Value: TSWFCollection);
 begin
-  fItems.Assign(Value);
+  FItems.Assign(Value);
   RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetKeepMoviesSize(const Value: boolean);
 begin
-  fKeepMoviesSize:=Value;
+  FKeepMoviesSize := Value;
   RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetLockMouseClick(const Value: boolean);
 Var i: integer;
 begin
-  fLockMouseClick:=Value;
-  for i:=0 to fItems.Count-1 do
-    if fItems.Items[i].fSWF<>nil Then fItems.Items[i].fSWF.LockMouseClick:=Value;
+  FLockMouseClick := Value;
+  for i := 0 to FItems.Count-1 do
+    if FItems.Items[i].FSWF<>nil Then FItems.Items[i].FSWF.LockMouseClick := Value;
 end;
 
 procedure TShockwaveFlashList.SetMenu(const Value: boolean);
 Var i: integer;
 begin
-  fMenu:=Value;
-  for i:=0 to fItems.Count-1 do
-    if fItems[i].fSWF<>nil Then fItems[i].fSWF.Menu:=Value;
+  FMenu := Value;
+  for i := 0 to FItems.Count-1 do
+    if FItems[i].FSWF<>nil Then FItems[i].FSWF.Menu := Value;
 end;
 
 procedure TShockwaveFlashList.SetAllowFullScreen(const Value: boolean);
 Var i: integer;
 begin
-  fAllowFullScreen:=Value;
-  for i:=0 to fItems.Count-1 do
-    if fItems[i].fSWF<>nil Then fItems[i].fSWF.AllowFullScreen:='true';
+  FAllowFullScreen := Value;
+  for i := 0 to FItems.Count-1 do
+    if FItems[i].FSWF<>nil Then FItems[i].FSWF.AllowFullScreen := 'true';
 end;
 
 procedure TShockwaveFlashList.SetMoviesHeight(const Value: integer);
 begin
-  fMoviesHeight:=Value;
-  if fKeepMoviesSize Then RefreshMoviesLayout;
+  FMoviesHeight := Value;
+  if FKeepMoviesSize Then RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetMoviesLayout(const Value: TMoviesLayout);
 begin
-  fMoviesLayout:=Value;
+  FMoviesLayout := Value;
   RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetMoviesWidth(const Value: integer);
 begin
-  fMoviesWidth:=Value;
-  if fKeepMoviesSize Then RefreshMoviesLayout;
+  FMoviesWidth := Value;
+  if FKeepMoviesSize Then RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetMovieWidthToHeight(const Value: integer);
 begin
-  fMovieWidthToHeight:=Value;
+  FMovieWidthToHeight := Value;
   RefreshMoviesLayout;
 end;
 
 procedure TShockwaveFlashList.SetPlaying(const Value: boolean);
 Var i: integer;
 begin
-  fPlaying := Value;
-  for i:=0 to fItems.Count-1 do
-    if fItems[i].fSWF<>nil Then fItems[i].fSWF.Playing:=Value;
+  FPlaying := Value;
+  for i := 0 to FItems.Count-1 do
+    if FItems[i].FSWF<>nil Then FItems[i].FSWF.Playing := Value;
 end;
 
 procedure TShockwaveFlashList.SetQuality(const Value: Integer);
 Var i: integer;
 begin
-  fQuality:=Value;
-  for i:=0 to fItems.Count-1 do
-    if fItems[i].fSWF<>nil Then fItems[i].fSWF.Quality:=Value;
+  FQuality := Value;
+  for i := 0 to FItems.Count-1 do
+    if FItems[i].FSWF<>nil Then FItems[i].FSWF.Quality := Value;
 end;
 
 procedure TShockwaveFlashList.SetScaleMode(const Value: Integer);
 Var i: integer;
 begin
-  fScaleMode:=Value;
-  for i:=0 to fItems.Count-1 do
-    if fItems[i].fSWF<>nil Then fItems[i].fSWF.ScaleMode:=Value;
+  FScaleMode := Value;
+  for i := 0 to FItems.Count-1 do
+    if FItems[i].FSWF<>nil Then FItems[i].FSWF.ScaleMode := Value;
 end;
 
 procedure TShockwaveFlashList.SetZoomRect(left, top, right, bottom: Integer);
 begin
-  if fCurentMovie<>nil Then fCurentMovie.SetZoomRect(left,top,right,bottom);
+  if FCurentMovie<>nil Then FCurentMovie.SetZoomRect(left,top,right,bottom);
 end;
 
 procedure TShockwaveFlashList.Stop;
 begin
-  if fCurentMovie<>nil Then fCurentMovie.Stop;
+  if FCurentMovie<>nil Then FCurentMovie.Stop;
 end;
 
 procedure TShockwaveFlashList.StopPlay;
 begin
-  if fCurentMovie<>nil Then fCurentMovie.StopPlay;
+  if FCurentMovie<>nil Then FCurentMovie.StopPlay;
 end;
 
 function TShockwaveFlashList.TColorToSWFColor(Value: TColor): integer;
 Var R,G,B: byte;
 begin
-  B:=Trunc(Value/sqr(256));
-  G:=Trunc((Value-B*sqr(256))/256);
-  R:=Trunc(Value-B*sqr(256)-G*256);
-  Result:=R shl 16 + G shl 8 + B;
+  B := Trunc(Value/sqr(256));
+  G := Trunc((Value-B*sqr(256))/256);
+  R := Trunc(Value-B*sqr(256)-G*256);
+  Result := R shl 16 + G shl 8 + B;
 end;
 
 procedure TShockwaveFlashList.WndProc(var Message: TMessage);
@@ -610,57 +610,57 @@ end;
 
 procedure TShockwaveFlashList.Zoom(factor: SYSINT);
 begin
-  if fCurentMovie<>nil Then fCurentMovie.Zoom(factor);
+  if FCurentMovie<>nil Then FCurentMovie.Zoom(factor);
 end;
 
 { TSWFChildren }
 
-constructor TSWFChildren.Create(AOwner: TComponent; AHost:TShockwaveFlashList);
+constructor TSWFChildren.Create(AOwner: TComponent; AHost: TShockwaveFlashList);
 Var i: integer;
     p: pointer;
     s: string;
     AParent: TWinControl;
 begin
-  Host:=AHost;
-  i:=1;
+  FHost := AHost;
+  i := 1;
   Repeat
-    s:=self.ClassName+IntToStr(i);
-    p:=nil;
-    AParent:=Host;
+    s := self.ClassName+IntToStr(i);
+    p := nil;
+    AParent := FHost;
     While (p=nil) and (AParent<>nil) do
       begin
-        p:=AParent.FindComponent(s);
-        AParent:=AParent.Parent;
+        p := AParent.FindComponent(s);
+        AParent := AParent.Parent;
       end;
     Inc(i);
   Until p=nil;
-  self.Name:=s;
+  self.Name := s;
   inherited Create(AOwner);
 end;
 
 procedure TSWFChildren.WndProc(var Message: TMessage);
-Var oldX,oldY: integer;
+var
+  oldX, oldY: integer;
 begin
-  if Host<>nil Then
+  if FHost<>nil Then
     begin
-      if Host.MessageSwfNeed(self,Message) Then
+      if FHost.MessageSwfNeed(self,Message) Then
         begin
-          oldX:=TSmallPoint(Message.LParam).x;
-          oldY:=TSmallPoint(Message.LParam).y;
-          TSmallPoint(Message.LParam).x:=oldX+Left;
-          TSmallPoint(Message.LParam).y:=oldY+Top;
-          Host.WndProc(Message);
-          TSmallPoint(Message.LParam).x:=oldX;
-          TSmallPoint(Message.LParam).y:=oldY;
+          oldX := TSmallPoint(Message.LParam).x;
+          oldY := TSmallPoint(Message.LParam).y;
+          TSmallPoint(Message.LParam).x := oldX+Left;
+          TSmallPoint(Message.LParam).y := oldY+Top;
+          FHost.WndProc(Message);
+          TSmallPoint(Message.LParam).x := oldX;
+          TSmallPoint(Message.LParam).y := oldY;
         end;
-      if (csDesigning in ComponentState) and (Host.MessageSwfNeed(self,Message)) Then
+      if (csDesigning in ComponentState) and (FHost.MessageSwfNeed(self,Message)) Then
         begin
-          Message.Result:=0;
+          Message.Result := 0;
           exit;
         end;
     end;
   inherited WndProc(Message);
 end;
-
 
 end.

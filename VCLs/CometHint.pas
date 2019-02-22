@@ -215,13 +215,13 @@ var
 
   //str,str1: string;
  // i: Integer;
- // col:cardinal;
+ // col: Cardinal;
   { DCFrame3D was taken from TToolbar97 by Jordan Russell }
   procedure DCFrame3D(var R: TRect; const TopLeftColor, BottomRightColor: TColor);
   { Similar to VCL's Frame3D function, but accepts a DC rather than a Canvas }
   var
     Pen, SavePen: HPEN;
-    P: array[0..2] of TPoint;
+    P: array [0..2] of TPoint;
   begin
     Pen := CreatePen(PS_SOLID, 1, ColorToRGB(TopLeftColor));
     SavePen := SelectObject(DC, Pen);
@@ -255,7 +255,7 @@ begin
 
   //str := '$';
   //for i := 1 to 4 do str := str+inttohex(ord(str1[i]),2);
-                          //messagebox(0,pchar(str+' '+inttostr(cardinal(Fhint.BGColor))+'  '+inttostr(cardinal(clbtnface))),pchar('gf'),mb_ok);
+                          //messagebox(0,PChar(str+' '+inttostr(cardinal(Fhint.BGColor))+'  '+inttostr(cardinal(clbtnface))),PChar('gf'),mb_ok);
   { Background }
   canvas.brush.color := FHint.BGColor;
   canvas.pen.color := FHint.BGColor;
@@ -483,7 +483,7 @@ begin
       Inc(pch);
       c2 := Byte(pch^);
       Inc(pch);
-      word(pwc^) :=
+      word(pwc^) := 
         (word(ch and $0F) shl 12) or
         (word(c1 and $3F) shl 6) or
         (c2 and $3F);

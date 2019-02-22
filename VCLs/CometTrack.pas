@@ -78,7 +78,7 @@ begin
   inherited Create(AOwner);
    parent := (AOwner as TWInControl);
 
-  FLoaded := false;
+  FLoaded := False;
   FSourceBitmap := nil;
 
   FBackGroundBitmap := Graphics.TBitmap.create;
@@ -91,8 +91,8 @@ begin
   FSourceBitmap := Graphics.TBitmap.create;
   FSourceBitmap.LoadFromResourceName(hinstance,'BITMAPTRACKBAR');
 
-  FOver := false;
-  FDown := false;
+  FOver := False;
+  FDown := False;
   FMax := 1000;
   FPosition := 0;
 
@@ -106,9 +106,9 @@ end;
 
 destructor TCometTrack.destroy;
 begin
-  FBackGroundBitmap.free;
+  FBackGroundBitmap.Free;
 
-  FSourceBitmap.free;
+  FSourceBitmap.Free;
 
   inherited;
 end;
@@ -118,13 +118,13 @@ begin
   if Value=nil then
   begin   // use internal bitmap
     if FSourceBitmap<>nil then
-      FSourceBitmap.free;
+      FSourceBitmap.Free;
     FSourceBitmap := Graphics.TBitmap.create;
     FSourceBitmap.LoadFromResourceName(hinstance,'BITMAPTRACKBAR');
   end
   else
   begin      // use external bitmap
-    if FSourceBitmap<>nil then FSourceBitmap.free;
+    if FSourceBitmap<>nil then FSourceBitmap.Free;
     FSourceBitmap := Value;
   end;
 end;
@@ -162,7 +162,7 @@ begin
 
     FBackGroundBitmap.Canvas.stretchDraw(rect(0,0,clientwidth,10),TempBitmap);
   finally
-    TempBitmap.free;
+    TempBitmap.Free;
   end;
 
 
@@ -296,7 +296,7 @@ begin
   FDown := True;
   PreviousPosition := FPosition;
 
-  FPosition := (Int64(x-11)*Int64(Fmax)) div Int64(clientwidth-26);//Int64(x*Self.max) div (Self.width);
+  FPosition := (Int64(x-11)*Int64(Fmax)) div Int64(clientwidth-26); //Int64(x*Self.max) div (Self.width);
   if FPosition>FMax then
     FPosition := FMax;
   if FPosition<0 then
@@ -326,7 +326,7 @@ begin
 
   PreviousPosition := FPosition;
 
-  Fposition := (Int64(x-11)*Int64(Fmax)) div Int64(clientwidth-26);//Int64(x*Self.max) div (Self.width);
+  Fposition := (Int64(x-11)*Int64(Fmax)) div Int64(clientwidth-26); //Int64(x*Self.max) div (Self.width);
   if FPosition>FMax then FPosition := FMax;
   if FPosition<0 then FPosition := 0;
 
@@ -338,7 +338,7 @@ end;
 
 procedure TCometTrack.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  FDown := false;
+  FDown := False;
   Invalidate;
 end;
 
@@ -350,7 +350,7 @@ end;
 
 procedure TCometTrack.CMMouseLeave(var Msg: TMessage);
 begin
-  FOver := false;
+  FOver := False;
   Invalidate;
 end;
 

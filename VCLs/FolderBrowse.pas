@@ -76,8 +76,8 @@ type
     function GetFlags: TBrowseFlags;
     function GetOperFlagW(F: Cardinal): Boolean;
     function GetOperFlagA(F: Cardinal): Boolean;
-    procedure SetOperFlagW(F :Cardinal; V: Boolean );
-    procedure SetOperFlagA(F :Cardinal; V: Boolean );
+    procedure SetOperFlagW(F : Cardinal; V: Boolean );
+    procedure SetOperFlagA(F : Cardinal; V: Boolean );
 
     procedure SetCaption(const Value: WideString);
   public

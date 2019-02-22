@@ -118,7 +118,7 @@ type
 
     procedure SetPlaying(Value: Boolean);
     procedure DrawButtons(ACanvas: TCanvas);  // draw all buttons in their current state (in response to an invalidate component)
-    procedure RepaintPreviouslyActiveButtons(ExceptButton: TMPlayerButton; SetState: Boolean = true; RemoveDown: Boolean = False);
+    procedure RepaintPreviouslyActiveButtons(ExceptButton: TMPlayerButton; SetState: Boolean = True; RemoveDown: Boolean = False);
     procedure SeekTimerStartTimer(Sender: TObject);  // is FF or RewButton still pressed?
     procedure SeekTimerEventTimer(Sender: TObject);
     function GetPressedButton: TMPlayerButton;
@@ -337,7 +337,7 @@ begin
   end;
   FButtons[BTN_ID_RADIO] := btn;
 
-  FLoaded := true;
+  FLoaded := True;
 end;
 
 destructor TMPlayerPanel.Destroy;
@@ -439,7 +439,7 @@ begin
   getCursorPos(point);
   point := screenToclient(point);
   with point do
-    shouldMove  :=
+    shouldMove := 
       ((x>=btn.FHitRect.Left+FleftCenter) and
        (x<=FleftCenter+btn.FHitRect.Right) and
        (y>=btn.FHitRect.Top) and
@@ -491,7 +491,7 @@ begin
         FFastForwardDownCopyRect.Bottom, FSourceBitmap.Canvas.handle,
         FFastForwardDownCopyRect.Left, FFastForwardDownCopyRect.top, SRCCopy);
 
-    FSeekTickTimer.Enabled := true; // time to start seeking!  redraw button as a Rew or FF one
+    FSeekTickTimer.Enabled := True; // time to start seeking!  redraw button as a Rew or FF one
     break;
   end;
 
@@ -521,7 +521,7 @@ begin
         FOnClick(MPBtnFF);  // call event!
     end;
 
-    FSeekTickTimer.Enabled := true; // time to start seeking!
+    FSeekTickTimer.Enabled := True; // time to start seeking!
     break;
   end;
 end;
@@ -560,13 +560,13 @@ var
   i: Integer;
   btn: TMPlayerButton;
 begin
-  result := nil;
+  Result := nil;
   for i := 0 to high(FButtons) do
   begin
     btn := FButtons[i];
     if btn.FState=MPBtnDown then
     begin
-      result := btn;
+      Result := btn;
       Exit;
     end;
   end;
@@ -602,7 +602,7 @@ begin
     if y<btn.FHitRect.Top then continue;
     if y>btn.FHitRect.Bottom then continue;
     if x>btn.FHitRect.Right+FleftCenter then continue;
-    found := true;
+    found := True;
     if Assigned(FOnBtnHint) then FOnBtnHint(btn.FID);
     RepaintPreviouslyActiveButtons(btn,False);
 
@@ -681,7 +681,7 @@ begin
     if y<btn.FHitRect.Top then continue;
     if y>btn.FHitRect.Bottom then continue;
     if x>btn.FHitRect.Right+FleftCenter then continue;
-    found := true;
+    found := True;
     RepaintPreviouslyActiveButtons(btn);
     btn.FState := MPBtnDown;  // set state
     bitBlt(Canvas.handle, FleftCenter + 1 + btn.FPaintOffset.x,
@@ -691,12 +691,12 @@ begin
 
     if ((btn.FID=MPBtnPrev) or (btn.FID=MPBtnNext)) then
     begin
-      SeekButton := true;
+      SeekButton := True;
       if ((not FSeekTickTimer.Enabled) and (not FSeekTimer.Enabled)) then
       begin
         FSeekTickTimer.Enabled := False;
         FSeekTimer.Enabled := False;
-        FSeekTimer.Enabled := true;
+        FSeekTimer.Enabled := True;
       end;
     end;
 
@@ -739,7 +739,7 @@ begin
     if y>btn.FHitRect.Bottom then continue;
     if x>btn.FHitRect.Right+FleftCenter then continue;
 
-    found := true;
+    found := True;
     wasDown := (btn.FState=MPBtnDown);
     RepaintPreviouslyActiveButtons(btn,true,true);
 
@@ -841,7 +841,7 @@ begin
     try
       TempBitmap.PixelFormat := pf24bit;
       TempBitmap.Width := 1;
-      TempBitmap.Height := ClientHeight;//51;
+      TempBitmap.Height := ClientHeight; //51;
 
       bitBlt(TempBitmap.Canvas.Handle,0,0,TempBitmap.Width,TempBitmap.Height,
              FSourceBitmap.Canvas.Handle,0,0,SRCCopy);
@@ -981,7 +981,7 @@ begin
   ACanvas.Font.Name := 'Tahoma';
   ACanvas.Font.Size := 8;
   ACanvas.Font.Style := [];
-  ACanvas.Font.Color := clSilver;//$00f0f0f0;
+  ACanvas.Font.Color := clSilver; //$00f0f0f0;
 
 
   rc.Left := clRect.Left+FposTimeCaption;

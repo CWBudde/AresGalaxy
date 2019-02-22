@@ -1057,7 +1057,7 @@ type
   TCTColors = class(TPersistent)
   private
     FOwner: TBaseCometTree;
-    FColors: array[0..13] of TColor;
+    FColors: array [0..13] of TColor;
     function GetColor(const Index: Integer): TColor;
     procedure SetColor(const Index: Integer; const Value: TColor);
   public
@@ -1129,7 +1129,7 @@ type
     Alignment: TAlignment;     // how to align within the node rectangle
     BidiMode: TBidiMode;       // directionality to be used for painting
     BrushOrigin: TPoint;       // the alignment for the brush used to draw dotted lines
-    ImageInfo: array[TVTImageInfoIndex] of TVTImageInfo; // info about each possible node image
+    ImageInfo: array [TVTImageInfoIndex] of TVTImageInfo; // info about each possible node image
   end;
 
   // Method called by the Animate routine for each animation step. 
@@ -1176,7 +1176,7 @@ type
   // ----- TBaseCometTree
   TBaseCometTree = class(TCustomControl)
   private
-    //aggiunta_globale:cardinal;
+    //aggiunta_globale: Cardinal;
     FBorderStyle: TBorderStyle;
     FHeader: TCmtHdr;
     FRoot: PCmtVNode;
@@ -1366,7 +1366,7 @@ type
     FOnDragAllowed: TVTDragAllowedEvent;         // used to get permission for manual drag in mouse down
     FOnDragOver: TVTDragOverEvent;               // called for every mouse move
     FOnHeaderDragged: TCmtHdrDraggedEvent;     // header (column) drag'n drop
-    FOnHeaderDraggedOut: TCmtHdrDraggedOutEvent; // header (column) drag'n drop, which did not result in a valid drop. 
+    FOnHeaderDraggedOut: TCmtHdrDraggedOutEvent; // header (column) drag'n drop, which did not Result in a valid drop. 
     FOnHeaderDragging: TCmtHdrDraggingEvent;   // header (column) drag'n drop
 
     // miscellanous events
@@ -2367,17 +2367,17 @@ const
   TreeNodeSize = (SizeOf(TVirtualNode) + 3) and not 3; // used for node allocation and access to internal data
 
   // Lookup to quickly convert a specific check state into its pressed counterpart and vice versa. 
-  PressedState: array[TCheckState] of TCheckState = (
+  PressedState: array [TCheckState] of TCheckState = (
     csUncheckedPressed, csUncheckedPressed, csCheckedPressed, csCheckedPressed, csMixedPressed, csMixedPressed
   );
-  UnpressedState: array[TCheckState] of TCheckState = (
+  UnpressedState: array [TCheckState] of TCheckState = (
     csUncheckedNormal, csUncheckedNormal, csCheckedNormal, csCheckedNormal, csMixedNormal, csMixedNormal
   );
 
 
 
 type // streaming support
-  TMagicID = array[0..5] of WideChar;
+  TMagicID = array [0..5] of WideChar;
 
   TChunkHeader = record
     ChunkType,
@@ -2420,15 +2420,15 @@ const
   UserChunk = 4;        // used for data supplied by the application
 
   {$ifdef UseFlatScrollbars}
-    ScrollBarProp: array[TScrollBarStyle] of Integer = (
+    ScrollBarProp: array [TScrollBarStyle] of Integer = (
       FSB_REGULAR_MODE,
       FSB_FLAT_MODE,
       FSB_ENCARTA_MODE
     );
   {$endif}
   
-  RTLFlag: array[Boolean] of Integer = (0, ETO_RTLREADING);
-  AlignmentToDrawFlag: array[TAlignment] of Cardinal = (DT_LEFT, DT_RIGHT, DT_CENTER);
+  RTLFlag: array [Boolean] of Integer = (0, ETO_RTLREADING);
+  AlignmentToDrawFlag: array [TAlignment] of Cardinal = (DT_LEFT, DT_RIGHT, DT_CENTER);
 
   WideNull = WideChar(#0);
   WideCR = WideChar(#13);
@@ -2481,7 +2481,7 @@ function TreeFromNode(Node: PCmtVNode): TBaseCometTree;
 // Returns the tree the node currently belongs to or nil if the node is not attached to a tree.
 
 begin
-  Assert(Assigned(Node), '');//'Node must not be nil.');
+  Assert(Assigned(Node), ''); //'Node must not be nil.');
 
   // The root node is marked by having its NextSibling (and PrevSibling) pointing to itself.
   while Assigned(Node) and (Node.NextSibling <> Node) do
@@ -2530,17 +2530,17 @@ begin
   repeat
     I := L;
     J := R;
-    P := TheArray[(L + R) shr 1];
+    P := Thearray [(L + R) shr 1];
     repeat
-      while Cardinal(TheArray[I]) < Cardinal(P) do
+      while Cardinal(Thearray [I]) < Cardinal(P) do
         Inc(I);
-      while Cardinal(TheArray[J]) > Cardinal(P) do
+      while Cardinal(Thearray [J]) > Cardinal(P) do
         Dec(J);
       if I <= J then
       begin
-        T := TheArray[I];
-        TheArray[I] := TheArray[J];
-        TheArray[J] := T;
+        T := Thearray [I];
+        Thearray [I] := Thearray [J];
+        Thearray [J] := T;
         Inc(I);
         Dec(J);
       end;
@@ -3159,13 +3159,13 @@ begin
   begin
     if GetObject(Bitmap, SizeOf(DIB), @DIB) = SizeOf(DIB) then
     begin
-      Assert(DIB.dsBm.bmPlanes * DIB.dsBm.bmBitsPixel = 32, '');//'Alpha blending error: bitmap must use 32 bpp.');
+      Assert(DIB.dsBm.bmPlanes * DIB.dsBm.bmBitsPixel = 32, ''); //'Alpha blending error: bitmap must use 32 bpp.');
       Result := DIB.dsBm.bmBits;
       Width := DIB.dsBmih.biWidth;
       Height := DIB.dsBmih.biHeight;
     end;
   end;
-  Assert(Result <> nil, '');//'Alpha blending DC error: no bitmap available.');
+  Assert(Result <> nil, ''); //'Alpha blending DC error: no bitmap available.');
 end;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3307,8 +3307,8 @@ end;
 //----------------------------------------------------------------------------------------------------------------------
 
 const
-  Grays: array[0..3] of TColor = (clWhite, clSilver, clGray, clBlack);
-  SysGrays: array[0..3] of TColor = (clWindow, clBtnFace, clBtnShadow, clBtnText);
+  Grays: array [0..3] of TColor = (clWhite, clSilver, clGray, clBlack);
+  SysGrays: array [0..3] of TColor = (clWindow, clBtnFace, clBtnShadow, clBtnText);
 
 procedure ConvertImageList(IL: TImageList; const ImageName: string; ColorRemapping: Boolean = True); 
 
@@ -3335,7 +3335,7 @@ begin
       Images.Handle := LoadBitmap(FindClassHInstance(TBaseCometTree), PChar(ImageName));
 
     try
-      Assert(Images.Height > 0, '');//'Internal image "' + ImageName + '" is missing or corrupt.');
+      Assert(Images.Height > 0, ''); //'Internal image "' + ImageName + '" is missing or corrupt.');
 
       // It is assumed that the image height determines also the width of one entry in the image list.
       IL.Clear;
@@ -3385,7 +3385,7 @@ asm
 
         MOV     EAX, 1
         DW      $A20F        // CPUID, EAX contains now version info and EDX feature information
-        MOV     EBX, EAX     // free EAX to get the result value
+        MOV     EBX, EAX     // free EAX to get the Result value
         XOR     EAX, EAX     // Result := False
         CMP     EBX, $50
         JB      @1           // if processor family is < 5 then it is not a Pentium class processor
@@ -3606,7 +3606,7 @@ end;
 procedure TWorkerThread.AddTree(Tree: TBaseCometTree);
 
 begin
-  Assert(Assigned(Tree), '');//'Tree must not be nil.');
+  Assert(Assigned(Tree), ''); //'Tree must not be nil.');
   
   with FWaiterList.LockList do
   try
@@ -3622,7 +3622,7 @@ end;
 procedure TWorkerThread.RemoveTree(Tree: TBaseCometTree);
 
 begin
-  Assert(Assigned(Tree), '');//'Tree must not be nil.');
+  Assert(Assigned(Tree), ''); //'Tree must not be nil.');
 
   with FWaiterList.LockList do
   try
@@ -5504,7 +5504,7 @@ begin
       Result[Counter] := Items[FPositionToIndex[I]];
       Inc(Counter);
     end;
-  // Set result length to actual visible count.
+  // Set Result length to actual visible count.
   SetLength(Result, Counter);
 end;
 
@@ -5701,7 +5701,7 @@ procedure TVirtualTreeColumns.PaintHeader(DC: HDC; R: TRect; HOffset: Integer; o
 // Main paint method to draw the header.
 
 const
-  SortGlyphs: array[TSortDirection, Boolean] of Integer = ( // ascending/descending, normal/XP style
+  SortGlyphs: array [TSortDirection, Boolean] of Integer = ( // ascending/descending, normal/XP style
     (3, 5) {ascending}, (2, 4) {descending}
   );
 
@@ -5829,7 +5829,7 @@ begin
               else
                 RightBorderFlag := 0;
 
-              should_Continue:=true;
+              should_Continue := True;
               if Assigned((owne as TCometTree).FOnPaintHeader) then
               (owne as TCometTree).FOnPaintHeader((owne as TCometTree),
                                                   FHeaderBitmap.Canvas,
@@ -5842,7 +5842,7 @@ begin
               // Draw button first before setting the clip region.
               {$ifdef ThemeSupport}
                 if tsUseThemes in FHeader.Treeview.FStates then begin
-                  if IsDownIndex then Details:=ThemeServices.GetElementDetails(thHeaderItemPressed)
+                  if IsDownIndex then Details := ThemeServices.GetElementDetails(thHeaderItemPressed)
                   else
                     if IsHoverIndex then Details := ThemeServices.GetElementDetails(thHeaderItemHot)
                      else Details := ThemeServices.GetElementDetails(thHeaderItemNormal);
@@ -5854,8 +5854,8 @@ begin
                 else
                   if IsDownIndex then begin
                     DrawEdge(Handle, ButtonR, PressedButtonStyle, PressedButtonFlags);
-                    brush.color:=Header.FBackGround;
-                    pen.color:=Header.FBackGround;
+                    brush.color := Header.FBackGround;
+                    pen.color := Header.FBackGround;
                     fillrect(Rect(ButtonR.left+1,ButtonR.Top+1,buttonR.Right-1,buttonR.Bottom-1));
                   end else
                     // Plates have the special case of raising on mouse over.
@@ -5864,10 +5864,10 @@ begin
                       DrawEdge(Handle, ButtonR, RaisedButtonStyle, RaisedButtonFlags or RightBorderFlag)
                      else begin
                        //DrawEdge(Handle, ButtonR, NormalButtonStyle, NormalButtonFlags or RightBorderFlag);
-                       brush.color:=Header.FBackGround;
-                       pen.color:=clBtnShadow;
+                       brush.color := Header.FBackGround;
+                       pen.color := clBtnShadow;
                       // if header.FBackGround=clBtnFace then
-                       Rectangle(ButtonR.left,ButtonR.Top-1,buttonR.Right+1,buttonR.Bottom);// else
+                       Rectangle(ButtonR.left,ButtonR.Top-1,buttonR.Right+1,buttonR.Bottom); // else
                       // FillRect(Rect(ButtonR.left-1,ButtonR.Top-1,buttonR.Right,buttonR.Bottom+1));
                     end;
               end;
@@ -5963,10 +5963,10 @@ begin
           DrawXPButton(Handle, ButtonR, False, False, False)
         else
         begin
-          //R1:=rect(ButtonR.Left,ButtonR.top,ButtonR.Left+5,ButtonR.Bottom);
+          //R1 := rect(ButtonR.Left,ButtonR.top,ButtonR.Left+5,ButtonR.Bottom);
           //DrawEdge(Handle, R1, NormalButtonStyle, NormalButtonFlags or RightBorderFlag);
           Brush.Color := FHeader.FBackground;
-          Pen.Color := FHeader.Treeview.colors.borderColor;//clBtnShadow;//FHeader.FBackground;
+          Pen.Color := FHeader.Treeview.colors.borderColor; //clBtnShadow; //FHeader.FBackground;
           
           if ((FHeader.Treeview as tcomettree).BevelEdges=[beBottom]) or ((FHeader.Treeview as tcomettree).BevelEdges=[beTop]) then Rectangle(ButtonR.left,ButtonR.Top-1,ButtonR.Right+1,ButtonR.bottom)
            else Rectangle(ButtonR.left,ButtonR.Top,ButtonR.Right+1,ButtonR.bottom);
@@ -5974,7 +5974,7 @@ begin
         end;
     end;
 
-    // blit the result to target
+    // blit the Result to target
     with R do
       BitBlt(DC, Left, Top, Right - Left, Bottom - Top, Handle, Left, Top, SRCCOPY);
   end;
@@ -7064,7 +7064,7 @@ procedure TScrollBarOptions.SetScrollBarStyle(Value: TScrollBarStyle);
 
 begin
   {$ifndef UseFlatScrollbars}
-    Assert(Value = sbmRegular, '');//'Flat scrollbars styles are disabled. Enable UseFlatScrollbars in VirtualTrees.pas for' +
+    Assert(Value = sbmRegular, ''); //'Flat scrollbars styles are disabled. Enable UseFlatScrollbars in VirtualTrees.pas for' +
     //  'flat scrollbar support.');
   {$endif UseFlatScrollbars}
 
@@ -7227,9 +7227,9 @@ begin
   FAutoScrollDelay := 1000;
   FAutoScrollInterval := 1;
 
-  FBGColor:=color;
-  FSelectable:=true;
-  FCanBgColor:=false;
+  FBGColor := color;
+  FSelectable := True;
+  FCanBgColor := False;
 
   FBackground := TPicture.Create;
 
@@ -7613,7 +7613,7 @@ begin
     repeat
       // Collect offsets for check, normal and state images.
       TextLeft := NodeLeft;
-      ghosted:=false;
+      ghosted := False;
        if WithImages and (GetImageIndex(Run,MainColumn) > -1) then Inc(TextLeft, ImageOffset);
       //if WithStateImages and (GetImageIndex(Run, ikState, MainColumn) > -1) then Inc(TextLeft, StateImageOffset);
 
@@ -7781,7 +7781,7 @@ begin
     repeat
       // Collect offsets for check, normal and state images.
       TextRight := NodeRight;
-       ghosted:=False;
+       ghosted := False;
         if WithImages and (GetImageIndex(Run,maincolumn) > -1) then Dec(TextRight, ImageOffset);
       //if WithStateImages and (GetImageIndex(Run, ikState, MainColumn) > -1) then Dec(TextRight, StateImageOffset);
 
@@ -7962,7 +7962,7 @@ var
   Level2: Cardinal;
 
 begin
-  Assert(Assigned(Node1) and Assigned(Node2), '');//'Nodes must never be nil.');
+  Assert(Assigned(Node1) and Assigned(Node2), ''); //'Nodes must never be nil.');
 
   if Node1 = Node2 then
     Result := 0
@@ -8185,7 +8185,7 @@ function TBaseCometTree.GetFullyVisible(Node: PCmtVNode): Boolean;
 // Determines whether the given node has the visibility flag set as well as all its parents are expanded.
 
 begin
-  Assert(Assigned(Node), '');//'Invalid parameter.');
+  Assert(Assigned(Node), ''); //'Invalid parameter.');
   Result := vsVisible in Node.States;
   if Result and (Node <> FRoot) then
     Result := VisiblePath[Node];
@@ -8305,7 +8305,7 @@ function TBaseCometTree.GetVisiblePath(Node: PCmtVNode): Boolean;
 // Determines if all parents of the given node are expanded and have the visibility flag set.
 
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Invalid parameters.');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Invalid parameters.');
 
   // FRoot is always expanded
   repeat
@@ -8748,10 +8748,10 @@ procedure TBaseCometTree.OriginalWMNCPaint(DC: HDC);
 // existing clipping regions, so it has been modified here to take this into account.
 
 const
-  InnerStyles: array[TBevelCut] of Integer = (0, BDR_SUNKENINNER, BDR_RAISEDINNER, 0);
-  OuterStyles: array[TBevelCut] of Integer = (0, BDR_SUNKENOUTER, BDR_RAISEDOUTER, 0);
-  EdgeStyles: array[TBevelKind] of Integer = (0, 0, BF_SOFT, BF_FLAT);
-  Ctl3DStyles: array[Boolean] of Integer = (BF_MONO, 0);
+  InnerStyles: array [TBevelCut] of Integer = (0, BDR_SUNKENINNER, BDR_RAISEDINNER, 0);
+  OuterStyles: array [TBevelCut] of Integer = (0, BDR_SUNKENOUTER, BDR_RAISEDOUTER, 0);
+  EdgeStyles: array [TBevelKind] of Integer = (0, 0, BF_SOFT, BF_FLAT);
+  Ctl3DStyles: array [Boolean] of Integer = (BF_MONO, 0);
 
 var
   RC, RW,rtemp: TRect;
@@ -8777,14 +8777,14 @@ begin
      //   Ctl3DStyles[Ctl3D]);
 
 
-     rtemp:=rc;
-     rtemp.top:=rtemp.bottom-2;
+     rtemp := rc;
+     rtemp.top := rtemp.bottom-2;
      dec(rtemp.Bottom);
      Brush.Color := Color;
      Windows.FillRect(DC, rtemp, Brush.Handle);
      
      inc(rtemp.bottom);
-     rtemp.top:=rtemp.bottom-1;
+     rtemp.top := rtemp.bottom-1;
      Brush.Color := FColors.BorderColor;
      Windows.FillRect(DC, rtemp, Brush.Handle);
 
@@ -9056,8 +9056,8 @@ begin
       end;
 
       if (toHotTrack in FOptions.FPaintOptions) and (Node = FCurrentHotNode) and (not (vsSelected in Node.States)) and (selectable) then begin
-        Brush.Color:=FColors.HotColor;
-        Pen.Color:=FColors.HotColor;
+        Brush.Color := FColors.HotColor;
+        Pen.Color := FColors.HotColor;
         FillRect(rect(CellRect.left,CellRect.Top,CellRect.right+1,cellRect.bottom));
       end;
 
@@ -9137,7 +9137,7 @@ type
     voSiblingSelectConstraint, voToggleOnDblClick);
 
 const
-  OptionMap: array[TOldVTOption] of Integer = (
+  OptionMap: array [TOldVTOption] of Integer = (
     Ord(toAcceptOLEDrop), Ord(toAnimatedToggle), Ord(toAutoDropExpand), Ord(toAutoExpand), Ord(toAutoScroll),
     Ord(toAutoSort), Ord(toAutoSpanColumns), Ord(toAutoTristateTracking), Ord(toCheckSupport), Ord(toDisableDrawSelection),
     Ord(toEditable), Ord(toExtendedFocus), Ord(toFullRowSelect), Ord(toGridExtensions), Ord(toHideFocusRect),
@@ -9569,7 +9569,7 @@ procedure TBaseCometTree.SetFullyVisible(Node: PCmtVNode; Value: Boolean);
 // of the parent nodes stays untouched.
 
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Invalid parameter');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Invalid parameter');
 
   IsVisible[Node] := Value;
   if Value then
@@ -9984,7 +9984,7 @@ var
   NeedUpdate: Boolean;
   
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Invalid parameter.');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Invalid parameter.');
 
   if Value <> (vsVisible in Node.States) then
   begin
@@ -10035,7 +10035,7 @@ procedure TBaseCometTree.SetVisiblePath(Node: PCmtVNode; Value: Boolean);
 // If Value is True then all parent nodes of Node are expanded.
 
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Invalid parameter.');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Invalid parameter.');
 
   if Value then
   begin
@@ -10369,7 +10369,7 @@ begin
   if not assigned(FOnHintStop) then exit;
 
   getcursorpos(punto);
-  punto1:=self.screentoclient(punto);
+  punto1 := self.screentoclient(punto);
   GetHitTestInfoAt(punto1.x,punto1.y,true,hitinf);
   if Hitinf.Hitnode<>nil then exit;
   if (hiOnItemLabel in HitInf.HitPositions) then exit;
@@ -10606,7 +10606,7 @@ var
   GetNextNode: TGetNextNodeProc;
 
   KeyState: TKeyboardState;
-  Buffer: array[0..1] of Char;
+  Buffer: array [0..1] of Char;
 
 begin
   // Make form key preview work and let application modify the key if it wants this.
@@ -11697,8 +11697,8 @@ var
   Changed: Boolean;
 
 begin
-  Assert(Assigned(Node), '');//'Node must not be nil!');
-  FSingletonNodeArray[0] := Node;
+  Assert(Assigned(Node), ''); //'Node must not be nil!');
+  FSingletonNodearray [0] := Node;
   Changed := InternalAddToSelection(FSingletonNodeArray, 1, False);
   if Changed then
     Change(Node);
@@ -11882,7 +11882,7 @@ function TBaseCometTree.AllocateInternalDataArea(Size: Cardinal): Cardinal;
 // Result is the offset from the begin of the node to the internal data area of the calling tree class.
 
 begin
-  Assert((FRoot = nil) or (FRoot.ChildCount = 0), '');//'Internal data allocation must be done before any node is created.');
+  Assert((FRoot = nil) or (FRoot.ChildCount = 0), ''); //'Internal data allocation must be done before any node is created.');
 
   Result := TreeNodeSize + FTotalInternalDataSize;
   Inc(FTotalInternalDataSize, (Size + 3) and not 3);
@@ -12195,14 +12195,14 @@ end;
 function TBaseCometTree.CountLevelDifference(Node1, Node2: PCmtVNode): Integer;
 
 // This method counts how many indentation levels the given nodes are apart. If both nodes have the same parent then the
-// difference is 0 otherwise the result is basically GetNodeLevel(Node2) - GetNodeLevel(Node1), but with sign.
-// If the result is negative then Node2 is less intended than Node1.
+// difference is 0 otherwise the Result is basically GetNodeLevel(Node2) - GetNodeLevel(Node1), but with sign.
+// If the Result is negative then Node2 is less intended than Node1.
 
 var
   Level1, Level2: Integer;
   
 begin
-  Assert(Assigned(Node1) and Assigned(Node2), '');//'Both nodes must be Assigned.');
+  Assert(Assigned(Node1) and Assigned(Node2), ''); //'Both nodes must be Assigned.');
 
   Level1 := 0;
   while Node1.Parent <> FRoot do
@@ -12229,7 +12229,7 @@ function TBaseCometTree.CountVisibleChildren(Node: PCmtVNode): Cardinal;
 // Note: the given node itself must be visible.
 
 begin
-  Assert(vsVisible in Node.States, '');//'Node must be visible.');
+  Assert(vsVisible in Node.States, ''); //'Node must be visible.');
 
   Result := 0;
   // its direct children
@@ -12251,7 +12251,7 @@ end;
 procedure TBaseCometTree.CreateParams(var Params: TCreateParams);
 
 const
-  ScrollBar: array[TScrollStyle] of Cardinal = (0, WS_HSCROLL, WS_VSCROLL, WS_HSCROLL or WS_VSCROLL);
+  ScrollBar: array [TScrollStyle] of Cardinal = (0, WS_HSCROLL, WS_VSCROLL, WS_HSCROLL or WS_VSCROLL);
 
 begin
   inherited CreateParams(Params);
@@ -12443,14 +12443,14 @@ begin
         HitInfo.HitPositions := [hiOnItem, hiOnItemCheckBox]
       else
       begin
-        ghosted:=false;
+        ghosted := False;
         //if Assigned(FStateImages) and (GetImageIndex(HitInfo.HitNode, ikState, HitInfo.HitColumn, Ghosted) > -1) then
         //  Inc(ImageOffset, FStateImages.Width + 2);
         if Offset < ImageOffset then
           Include(HitInfo.HitPositions, hiOnStateIcon)
         else
         begin
-          ghosted:=False;
+          ghosted := False;
            if Assigned(FImages) and (GetImageIndex(HitInfo.HitNode,hitinfo.hitcolumn) > -1) then Inc(ImageOffset, FImages.Width + 2);
           if Offset < ImageOffset then Include(HitInfo.HitPositions, hiOnNormalIcon)
           else
@@ -12566,13 +12566,13 @@ begin
         HitInfo.HitPositions := [hiOnItem, hiOnItemCheckBox]
       else
       begin
-        ghosted:=false;
+        ghosted := False;
         //if Assigned(FStateImages) and (GetImageIndex(HitInfo.HitNode, ikState, HitInfo.HitColumn, Ghosted) > -1) then
         //  Dec(ImageOffset, FStateImages.Width + 2);
         if Offset > ImageOffset then Include(HitInfo.HitPositions, hiOnStateIcon)
         else
         begin
-          ghosted:=False;
+          ghosted := False;
            if Assigned(FImages) and (GetImageIndex(HitInfo.HitNode,HitInfo.HitColumn) > -1) then Dec(ImageOffset, FImages.Width + 2);
           if Offset > ImageOffset then Include(HitInfo.HitPositions, hiOnNormalIcon)
           else
@@ -12655,7 +12655,7 @@ function TBaseCometTree.DetermineScrollDirections(X, Y: Integer): TScrollDirecti
 // Determines which direction the client area must be scrolled depending on the given position.
 
 begin
-  Result:= [];
+  Result :=  [];
 
   if CanAutoScroll then
   begin
@@ -12823,7 +12823,7 @@ function TBaseCometTree.DoCancelEdit: Boolean;
 begin
 
   Exclude(FStates, tsEditPending);
-  Result := false;//(tsEditing in FStates) and FEditLink.CancelEdit;
+  Result := False; //(tsEditing in FStates) and FEditLink.CancelEdit;
   {if Result then
   begin
     Exclude(FStates, tsEditing);
@@ -13165,7 +13165,7 @@ end;
 function TBaseCometTree.DoEndEdit: Boolean;
 
 begin
-  Result := false;//(tsEditing in FStates) and FEditLink.EndEdit;
+  Result := False; //(tsEditing in FStates) and FEditLink.EndEdit;
   {if Result then
   begin
     Exclude(FStates, tsEditing);
@@ -13339,7 +13339,7 @@ end;
 procedure TBaseCometTree.DoGetImageIndex(Node: PCmtVNode; Column: Integer; var Index: Integer);
 
 begin
-if column>0 then index:=-1 else
+if column>0 then index := -1 else
 if Assigned(FOnGetImage) then FOnGetImage(Self, Node, Index);
 end;
 
@@ -14020,7 +14020,7 @@ begin
         CurrentNode := GetFirstVisibleNoInit;
       end;
 
-      Assert(Assigned(CurrentNode), '');//'DoValidateCache: Internal error. CurrentNode is nil.');
+      Assert(Assigned(CurrentNode), ''); //'DoValidateCache: Internal error. CurrentNode is nil.');
 
       // EntryCount serves as counter for processed nodes here. This value can always start at 0 as
       // the validation either starts also at index 0 or an index which is always a multiple of CacheThreshold
@@ -14188,7 +14188,7 @@ function TBaseCometTree.GetCheckImage(Node: PCmtVNode): Integer;
 const
   // Four dimensional array consisting of image indices for the check type, the check state, the enabled state and the
   // hot state.
-  CheckStateToCheckImage: array[ctCheckBox..ctButton, csUncheckedNormal..csMixedPressed, Boolean, Boolean] of Integer = (
+  CheckStateToCheckImage: array [ctCheckBox..ctButton, csUncheckedNormal..csMixedPressed, Boolean, Boolean] of Integer = (
     // ctCheckBox, ctTriStateCheckBox
     (
       // csUncheckedNormal (disabled [not hot, hot], enabled [not hot, hot])
@@ -14524,7 +14524,7 @@ var
   // Unfortunately there is no easier way than this, currently.
 
   var
-    Buf: array[0..6] of Char;
+    Buf: array [0..6] of Char;
 
   begin
     GetLocaleInfo(Language, LOCALE_IDEFAULTANSICODEPAGE, Buf, 6);
@@ -14850,7 +14850,7 @@ begin
     if (not IsAnyHit and MultiSelect and ShiftEmpty) or
       (IsAnyHit and (not NodeSelected or (NodeSelected and CanClear)) and (ShiftEmpty or not MultiSelect)) then
     begin
-      Assert(not (tsClearPending in FStates), '');//'Pending and direct clearance are mutual exclusive!');
+      Assert(not (tsClearPending in FStates), ''); //'Pending and direct clearance are mutual exclusive!');
       if NodeSelected then
       begin
         // If the currently hit node is (also) selected then we have to reselect it again but without
@@ -15057,7 +15057,7 @@ begin
       Include(States, vsHasChildren);
     if ivsSelected in InitStates then
     begin
-      FSingletonNodeArray[0] := Node;
+      FSingletonNodearray [0] := Node;
       InternalAddToSelection(FSingletonNodeArray, 1, False);
     end;
 
@@ -15134,8 +15134,8 @@ end;
 function TBaseCometTree.InternalAddToSelection(Node: PCmtVNode; ForceInsert: Boolean): Boolean;
 
 begin
-  Assert(Assigned(Node), '');//'Node must not be nil!');
-  FSingletonNodeArray[0] := Node;
+  Assert(Assigned(Node), ''); //'Node must not be nil!');
+  FSingletonNodearray [0] := Node;
   Result := InternalAddToSelection(FSingletonNodeArray, 1, ForceInsert);
 end;
 
@@ -15477,7 +15477,7 @@ var
   Index: Integer;
 
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Node must neither be nil nor the root node.');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Node must neither be nil nor the root node.');
 
   if (Node = FFocusedNode) and not KeepFocus then
   begin
@@ -15782,7 +15782,7 @@ procedure TBaseCometTree.PaintImage(const PaintInfo: TVTPaintInfo; ImageInfoInde
   Images: TImageList; DoOverlay: Boolean);
 
 const
-  Style: array[TImageType] of Cardinal = (0, ILD_MASK);
+  Style: array [TImageType] of Cardinal = (0, ILD_MASK);
 
 var
   OverlayImage: Integer;
@@ -15806,14 +15806,14 @@ begin
         ForegroundColor := ColorToRGB(FColors.UnfocusedSelectionColor);
     end
     else begin
-      if (Node=FCurrentHotNode) and (toHotTrack in FOptions.FPaintOptions) and (selectable) then ForegroundColor:=GetRGBColor(FColors.HotColor)
-       else ForegroundColor:=GetRGBColor(Color);
+      if (Node=FCurrentHotNode) and (toHotTrack in FOptions.FPaintOptions) and (selectable) then ForegroundColor := GetRGBColor(FColors.HotColor)
+       else ForegroundColor := GetRGBColor(Color);
     end;
 
 
     // Since the overlay image must be specified together with the image to draw
     // it is meaningfull to retrieve it in advance.
-    overlayghosted:=false;
+    overlayghosted := False;
     //if not DoOverlay then
      // OverlayImage := GetImageIndex(PaintInfo.Node, PaintInfo.Column)
     //else
@@ -16176,7 +16176,7 @@ var
   Index: Integer;
 
 begin
-  Assert(Assigned(Node), '');//'Node must not be nil!');
+  Assert(Assigned(Node), ''); //'Node must not be nil!');
   if vsSelected in Node.States then
   begin
     Exclude(Node.States, vsSelected);
@@ -16231,7 +16231,7 @@ var
   Index: Integer;
 
 begin
-  Assert(Assigned(EndNode), '');//'EndNode must not be nil!');
+  Assert(Assigned(EndNode), ''); //'EndNode must not be nil!');
   ClearTempCache;
   if StartNode = nil then
     StartNode := FRoot.FirstChild
@@ -16338,7 +16338,7 @@ procedure TBaseCometTree.StartWheelPanning(Position: TPoint);
     Temp: HRGN;
     
   begin
-    Assert(not FPanningImage.Empty, '');//'Invalid wheel panning image.');
+    Assert(not FPanningImage.Empty, ''); //'Invalid wheel panning image.');
 
     // Create an initial region on which we operate.
     Result := CreateRectRgn(0, 0, 0, 0);
@@ -16355,14 +16355,14 @@ procedure TBaseCometTree.StartWheelPanning(Position: TPoint);
           else
             if (Start > -1) and (Pixels[X, Y] = clFuchsia) then
             begin
-              // A non-transparent span is finished. Add it to the result region.
+              // A non-transparent span is finished. Add it to the Result region.
               Temp := CreateRectRgn(Start, Y, X, Y + 1);
               CombineRgn(Result, Result, Temp, RGN_OR);
               DeleteObject(Temp);
               Start := -1;
             end;
         end;
-        // If there is an open span then add this also to the result region.
+        // If there is an open span then add this also to the Result region.
         if Start > -1 then
         begin
           Temp := CreateRectRgn(Start, Y, Width, Y + 1);
@@ -16556,7 +16556,7 @@ var
   Position: Integer;
 
 begin
-  Assert(Assigned(EndNode), '');//'EndNode must not be nil!');
+  Assert(Assigned(EndNode), ''); //'EndNode must not be nil!');
   if StartNode = nil then
     StartNode := FRoot.FirstChild
   else
@@ -16637,7 +16637,7 @@ var
   NewSize: Integer;
 
 begin
-  Assert(Assigned(EndNode), '');//'EndNode must not be nil!');
+  Assert(Assigned(EndNode), ''); //'EndNode must not be nil!');
   
   if StartNode = nil then
     StartNode := FRoot.FirstChild
@@ -16746,7 +16746,7 @@ end;
 //----------------------------------------------------------------------------------------------------------------------
 
 const
-  ScrollMasks: array[Boolean] of Cardinal = (0, SIF_DISABLENOSCROLL);
+  ScrollMasks: array [Boolean] of Cardinal = (0, SIF_DISABLENOSCROLL);
 
 const // Region identifiers for GetRandomRgn
   CLIPRGN = 1;
@@ -17343,7 +17343,7 @@ var
 begin
   if (Node.ChildCount > 0) and not (toReadOnly in FOptions.FMiscOptions) then
   begin
-    Assert(not (tsIterating in FStates), '');//'Deleting nodes during tree iteration leads to invalid pointers.');
+    Assert(not (tsIterating in FStates), ''); //'Deleting nodes during tree iteration leads to invalid pointers.');
 
     // The code below uses some flags for speed improvements which may cause invalid pointers if updates of
     // the tree happen. Hence switch updates off until we have finished the operation.
@@ -17426,7 +17426,7 @@ var
 begin
   if Assigned(Node) and (Node <> FRoot) and not (toReadOnly in FOptions.FMiscOptions) then
   begin
-    Assert(not (tsIterating in FStates), '');//'Deleting nodes during tree iteration leads to invalid pointers.');
+    Assert(not (tsIterating in FStates), ''); //'Deleting nodes during tree iteration leads to invalid pointers.');
 
     // Determine parent node for structure change notification.
     if Node.Parent = FRoot then
@@ -17781,8 +17781,8 @@ var
   CurrentAlignment: TAlignment;
 
 begin
-  Assert(Assigned(Node), '');//'Node must not be nil.');
-  Assert(Node <> FRoot, '');//'Node must not be the hidden root node.');
+  Assert(Assigned(Node), ''); //'Node must not be nil.');
+  Assert(Node <> FRoot, ''); //'Node must not be the hidden root node.');
 
   MainColumnHit := (Column + 1) in [0, FHeader.MainColumn + 1];
   if not (vsInitialized in Node.States) then
@@ -17871,7 +17871,7 @@ begin
     // Consider associated images.
     //if Assigned(FStateImages) and (GetImageIndex(Node, ikState, Column, Ghosted) > -1) then
      // Inc(Offset, FStateImages.Width + 2);
-     ghosted:=False;
+     ghosted := False;
       if Assigned(FImages) and (GetImageIndex(Node,column) > -1) then Inc(Offset, FImages.Width + 2);
 
     // Offset contains now the distance from the left or right border of the rectangle (depending on bidi mode).
@@ -17946,7 +17946,7 @@ end;
 
 function TBaseCometTree.GetFirstChild(Node: PCmtVNode): PCmtVNode;
 
-// Returns the first child of the given node. The result node is initialized before exit.
+// Returns the first child of the given node. The Result node is initialized before exit.
 
 begin
   if (Node = nil) or (Node = FRoot) then
@@ -18361,7 +18361,7 @@ end;
 
 function TBaseCometTree.GetLastVisible(Node: PCmtVNode = nil): PCmtVNode;
 
-// Returns the very last visible node in the tree and initializes nodes all the way down including the result node.
+// Returns the very last visible node in the tree and initializes nodes all the way down including the Result node.
 
 var
   Next: PCmtVNode;
@@ -18499,7 +18499,7 @@ begin
   while Assigned(Run) do
   begin
     TextLeft := NodeLeft;
-     ghosted:=False;
+     ghosted := False;
     if WithImages and (GetImageIndex(Run,column) > -1) then Inc(TextLeft, ImageOffset);
     //if WithStateImages and (GetImageIndex(Run, ikState, Column) > -1) then
      // Inc(TextLeft, StateImageOffset);
@@ -18529,7 +18529,7 @@ begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     // Has this node got children?
     if vsHasChildren in Result.States then
@@ -18619,7 +18619,7 @@ begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     // if there is no child node try siblings
     if Assigned(Result.FirstChild) then
@@ -18656,7 +18656,7 @@ function TBaseCometTree.GetNextSelected(Node: PCmtVNode): PCmtVNode;
 
 // Returns the next node in the tree which is currently selected. Since children of unitialized nodes cannot be
 // in the current selection (because they simply do not exist yet) it is not necessary to initialize nodes here. 
-// The result however is initialized if necessary.
+// The Result however is initialized if necessary.
 
 begin
   if FSelectionCount > 0 then
@@ -18684,7 +18684,7 @@ begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     Result := Node.NextSibling;
     if Assigned(Result) and not (vsInitialized in Result.States) then
@@ -18706,7 +18706,7 @@ begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     // If the given node is not visible then look for a parent node which is visible, otherwise we will
     // likely go unnecessarily through a whole bunch of invisible nodes.
@@ -18774,7 +18774,7 @@ begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     // If the given node is not visible then look for a parent node which is visible, otherwise we will
     // likely go unnecessarily through a whole bunch of invisible nodes.
@@ -18825,7 +18825,7 @@ function TBaseCometTree.GetNextVisibleSibling(Node: PCmtVNode): PCmtVNode;
 // Returns the next visible sibling after Node. Initialization is done implicitly.
 
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Invalid parameter.');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Invalid parameter.');
 
   Result := Node;
   repeat
@@ -18840,7 +18840,7 @@ function TBaseCometTree.GetNextVisibleSiblingNoInit(Node: PCmtVNode): PCmtVNode;
 // Returns the next visible sibling after Node.
 
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Invalid parameter.');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Invalid parameter.');
 
   Result := Node;
   repeat
@@ -18962,7 +18962,7 @@ function TBaseCometTree.GetData(Node: PCmtVNode): Pointer;
 
 begin
 
-  Assert(FNodeDataSize > 0, '');//'NodeDataSize not initialized.');
+  Assert(FNodeDataSize > 0, ''); //'NodeDataSize not initialized.');
   
   if (FNodeDataSize <= 0) or (Node = nil) or (Node = FRoot) then
     Result := nil
@@ -18996,14 +18996,14 @@ end;
 
 function TBaseCometTree.GetPrevious(Node: PCmtVNode): PCmtVNode;
 
-// Resturns previous node in tree with regard to Node. The result node is initialized if necessary. 
+// Resturns previous node in tree with regard to Node. The Result node is initialized if necessary. 
 
 begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(vsInitialized in Result.States, '');//'Node must already be initialized.');
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(vsInitialized in Result.States, ''); //'Node must already be initialized.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     // Is there a previous sibling?
     if Assigned(Node.PrevSibling) then
@@ -19049,7 +19049,7 @@ begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     // Is there a previous sibling?
     if Assigned(Node.PrevSibling) then
@@ -19099,8 +19099,8 @@ begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(vsInitialized in Result.States, '');//'Node must already be initialized.');
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(vsInitialized in Result.States, ''); //'Node must already be initialized.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     // If the given node is not visible then look for a parent node which is visible and use its last visible
     // child or the parent node (if there is no visible child) as result.
@@ -19161,7 +19161,7 @@ begin
   Result := Node;
   if Assigned(Result) then
   begin
-    Assert(Result <> FRoot, '');//'Node must not be the hidden root node.');
+    Assert(Result <> FRoot, ''); //'Node must not be the hidden root node.');
 
     // If the given node is not visible then look for a parent node which is visible and use its last visible
     // child or the parent node (if there is no visible child) as result.
@@ -19210,7 +19210,7 @@ function TBaseCometTree.GetPreviousVisibleSibling(Node: PCmtVNode): PCmtVNode;
 // Returns the previous visible sibling before Node. Initialization is done implicitly.
 
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Invalid parameter.');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Invalid parameter.');
 
   Result := Node;
   repeat
@@ -19225,7 +19225,7 @@ function TBaseCometTree.GetPreviousVisibleSiblingNoInit(Node: PCmtVNode): PCmtVN
 // Returns the previous visible sibling before Node. 
 
 begin
-  Assert(Assigned(Node) and (Node <> FRoot), '');//'Invalid parameter.');
+  Assert(Assigned(Node) and (Node <> FRoot), ''); //'Invalid parameter.');
 
   Result := Node;
   repeat
@@ -19378,8 +19378,8 @@ begin
         Run := GetNextNoInit(Run);
       end;
 
-    // Since we may have skipped some nodes the result array is likely to be smaller than the
-    // selection array, hence shorten the result to true length.
+    // Since we may have skipped some nodes the Result array is likely to be smaller than the
+    // selection array, hence shorten the Result to true length.
     if Integer(Counter) < Length(Result) then
       SetLength(Result, Counter);
   end;
@@ -19406,7 +19406,7 @@ function TBaseCometTree.GetVisibleParent(Node: PCmtVNode): PCmtVNode;
 // This method is one of the seldom cases where the hidden root node could be returned.
 
 begin
-  Assert(Assigned(Node), '');//'Node must not be nil.');
+  Assert(Assigned(Node), ''); //'Node must not be nil.');
 
   Result := Node;
   while Result <> FRoot do
@@ -19705,7 +19705,7 @@ var
   WasIterating: Boolean;
   
 begin
-  Assert(Node <> FRoot, '');//'Node must not be the hidden root node.');
+  Assert(Node <> FRoot, ''); //'Node must not be the hidden root node.');
 
   WasIterating := tsIterating in FStates;
   Include(FStates, tsIterating);
@@ -19807,7 +19807,7 @@ procedure TBaseCometTree.PaintTree(TargetCanvas: TCanvas; Window: TRect; Target:
 // a full image in the window, selected only nodes for a drag image etc.
 
 const
-  ImageKind: array[Boolean] of TVTImageKind = (ikNormal, ikSelected);
+  ImageKind: array [Boolean] of TVTImageKind = (ikNormal, ikSelected);
 
 var
   DrawSelectionRect,
@@ -19843,7 +19843,7 @@ begin
 
 
   // Create small bitmaps and initialize default values.
-  // The bitmaps are used to paint one node at a time and to draw the result to the target (e.g. screen) in one step,
+  // The bitmaps are used to paint one node at a time and to draw the Result to the target (e.g. screen) in one step,
   // to prevent flickering.
   NodeBitmap := TBitmap.Create;
   // For alpha blending we need the 32 bit pixel format.
@@ -19901,7 +19901,7 @@ begin
     FirstColumn := InvalidColumn;
     
     if Assigned(PaintInfo.Node) then begin
-      //aggiunta_globale:=PaintInfo.Node.index;
+      //aggiunta_globale := PaintInfo.Node.index;
 
       SelectLevel := InitializeLineImageAndSelectLevel(PaintInfo.Node, LineImage);
       IndentSize := Length(LineImage);
@@ -19913,7 +19913,7 @@ begin
       while Assigned(PaintInfo.Node) do begin
 
        if (vsHidden in PaintInfo.node.states) then begin
-        PaintInfo.Node:=GetNextVisible(PaintInfo.Node);
+        PaintInfo.Node := GetNextVisible(PaintInfo.Node);
         continue;
        end;
        
@@ -20006,8 +20006,8 @@ begin
 
 
                         ImageInfo[iiCheck].Index := -1;
-                        ImageInfo[iiNormal].ghosted:=false;
-                        ImageInfo[iiState].ghosted:=false;
+                        ImageInfo[iiNormal].ghosted := False;
+                        ImageInfo[iiState].ghosted := False;
                       //if ShowStateImages then begin
 
                       //  ImageInfo[iiState].Index := GetImageIndex(Node, ikState, Column, ImageInfo[iiState].Ghosted);
@@ -20500,7 +20500,7 @@ procedure TBaseCometTree.Sort(Node: PCmtVNode; Column: TColumnIndex; Direction: 
       end;
     end;
 
-    // Just append the list which is not nil (or set end of result list to nil if both lists are nil).
+    // Just append the list which is not nil (or set end of Result list to nil if both lists are nil).
     if Assigned(A) then
       Result.NextSibling := A
     else
@@ -20537,7 +20537,7 @@ procedure TBaseCometTree.Sort(Node: PCmtVNode; Column: TColumnIndex; Direction: 
       end;
     end;
 
-    // Just append the list which is not nil (or set end of result list to nil if both lists are nil).
+    // Just append the list which is not nil (or set end of Result list to nil if both lists are nil).
     if Assigned(A) then
       Result.NextSibling := A
     else
@@ -20714,7 +20714,7 @@ var
   ToggleData: TToggleAnimationData;
   
 begin
-  Assert(Assigned(Node), '');//'Node must not be nil.');
+  Assert(Assigned(Node), ''); //'Node must not be nil.');
   NeedUpdate := False;
 
   // We don't need to switch the expand state if the node is being deleted otherwise some
@@ -21206,7 +21206,7 @@ end;
 function TCustomCometStringTree.GetText(Node: PCmtVNode; Column: TColumnIndex): WideString;
 
 begin
-  Assert(Assigned(Node), '');//'Node must not be nil.');
+  Assert(Assigned(Node), ''); //'Node must not be nil.');
 
   if not (vsInitialized in Node.States) then
     InitNode(Node);
@@ -21265,7 +21265,7 @@ var
 begin
   with PaintInfo do begin
     InitializeTextProperties(Canvas, Node, Column);
-    //canvas.font.color:=Clwhite;
+    //canvas.font.color := Clwhite;
 
     FFontChanged := False;
     TripleWidth := FEllipsisWidth;

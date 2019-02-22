@@ -26,26 +26,25 @@ type
     FOnMouseUp: TMouseEvent;
     FOnMouseMove: TMouseMoveEvent;
     FOnClick: TNotifyEvent;
-    fLockMouseClick: boolean;
-    WasDown: boolean;
+    FLockMouseClick: Boolean;
+    FWasDown: Boolean;
     FOleObject: IOleObject;
   protected
-    procedure WndProc(var Message:TMessage); override;
+    procedure WndProc(var Message: TMessage); override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
     procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
     procedure Click; override;
     procedure InitControlInterface(const Obj: IUnknown); override;
-    //procedure Resize; override; {Resize Error Workaround}
   public
-    Procedure CreateWnd; override;
+    procedure CreateWnd; override;
     procedure LoadMovieFromStream(Src: TStream);
   published
     property OnMouseDown: TMouseEvent read FOnMouseDown write FOnMouseDown;
     property OnMouseUp: TMouseEvent read FOnMouseUp write FOnMouseUp;
     property OnMouseMove: TMouseMoveEvent read FOnMouseMove write FOnMouseMove;
     property OnClick: TNotifyEvent read FOnClick write FOnClick;
-    property LockMouseClick: boolean read fLockMouseClick write fLockMouseClick default false;
+    property LockMouseClick: Boolean read FLockMouseClick write FLockMouseClick default False;
   end;
 
 procedure Register;
@@ -55,22 +54,7 @@ implementation
 uses
  zlib;
 
-{procedure TShockwaveFlashEx.Resize;
-var
-SavedParent: TWinControl;
-begin
-//Sync flash bounds after any move
-
-SavedParent := Parent;
-Try
-Parent := nil;
-inherited;
-finally
-Parent := SavedParent;
-end;
-end; }
-
-Procedure TShockwaveFlashEx.CreateWnd;
+procedure TShockwaveFlashEx.CreateWnd;
 begin
   inherited;
 end;
@@ -90,7 +74,7 @@ procedure TShockwaveFlashEx.LoadMovieFromStream(Src: TStream);
    ISize: int64;
    B: byte;
    ASign: array [0..2] of char;
-   isCompress: boolean;
+   isCompress: Boolean;
    ZStream: TZDeCompressionStream;
 
 begin
@@ -109,7 +93,7 @@ begin
       try
         unCompress.CopyFrom(ZStream, SRCSize - 8);
       finally
-        ZStream.free;
+        ZStream.Free;
       end;
       unCompress.Position := 0;
     end else
@@ -120,7 +104,7 @@ begin
     end;
 
   // store "template"
-  EmbedMovie := false;
+  EmbedMovie := False;
   FOleObject.QueryInterface(IPersistStreamInit, PersistStream);
   PersistStream.GetSizeMax(ISize);
   Mem := TMemoryStream.Create;
@@ -155,34 +139,34 @@ end;
 procedure TShockwaveFlashEx.WndProc(var Message: TMessage);
 Var x,y: integer;
     xy: TPoint;
-    ShiftState: TShiftState;//cga
+    ShiftState: TShiftState; //cga
 begin
 
   if (Message.Msg >= WM_MOUSEFIRST) and (Message.Msg <= WM_MOUSELAST) then//cga
     if not (csDesigning in ComponentState) then begin
-      ShiftState:=KeysToShiftState(TWMMouse(Message).Keys);//cga
-      x:=TSmallPoint(Message.LParam).x;
-      y:=TSmallPoint(Message.LParam).y;
+      ShiftState := KeysToShiftState(TWMMouse(Message).Keys); //cga
+      x := TSmallPoint(Message.LParam).x;
+      y := TSmallPoint(Message.LParam).y;
       case Message.Msg of
-        CM_MOUSELEAVE: WasDown:=false;
+        CM_MOUSELEAVE: FWasDown := False;
         WM_LBUTTONDOWN:
         begin
           MouseDown(mbLeft,ShiftState,x,y);
-          WasDown:=true;
+          FWasDown := True;
         end;
-        WM_RBUTTONDOWN: WasDown:=true;
+        WM_RBUTTONDOWN: FWasDown := True;
         WM_RBUTTONUP:
-        if (PopupMenu<>nil) and (WasDown) then begin
-          WasDown:=false;
-          xy.X:=x;
-          xy.Y:=y;
-          xy:=ClientToScreen(xy);
+        if (PopupMenu<>nil) and (FWasDown) then begin
+          FWasDown := False;
+          xy.X := x;
+          xy.Y := y;
+          xy := ClientToScreen(xy);
           PopupMenu.Popup(xy.X,xy.Y);
         end;
         WM_LBUTTONUP:
         begin
           MouseUp(mbLeft,ShiftState,x,y);
-          WasDown:=false;
+          FWasDown := False;
         end;
         WM_MOUSEMOVE: MouseMove(ShiftState,x,y);
       end;
@@ -190,7 +174,7 @@ begin
       if (((Message.Msg=WM_RBUTTONDOWN) or (Message.Msg=WM_RBUTTONDOWN)) and (not Menu)) or
          (((Message.Msg=WM_RBUTTONUP) or (Message.Msg=WM_LBUTTONUP) or (Message.Msg=WM_LBUTTONDOWN)
           or (Message.Msg=WM_LBUTTONDBLCLK))
-          and fLockMouseClick)
+          and FLockMouseClick)
       then
         Message.Result := 0
       else
@@ -200,8 +184,8 @@ begin
   inherited WndProc(Message);
 end;
 
-procedure TShockwaveFlashEx.MouseDown(Button: TMouseButton; Shift:
-TShiftState; X, Y: Integer);
+procedure TShockwaveFlashEx.MouseDown(Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
 begin
   if Assigned(FOnMouseDown) then
     begin
@@ -209,14 +193,14 @@ begin
     end;
 end;
 
-procedure TShockwaveFlashEx.MouseUp(Button: TMouseButton; Shift:
-TShiftState; X, Y: Integer);
+procedure TShockwaveFlashEx.MouseUp(Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
 begin
   if Assigned(FOnMouseUp) then
     begin
       FOnMouseUp(Self, Button, Shift, X, Y);
     end;
-  if WasDown Then Click;
+  if FWasDown Then Click;
 end;
 
 procedure TShockwaveFlashEx.MouseMove(Shift: TShiftState; X, Y: Integer);

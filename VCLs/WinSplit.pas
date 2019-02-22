@@ -129,7 +129,7 @@ begin
   Width := 3;
   xpos := 0;
   ypos := 0;
-  FShouldAnimate := true;
+  FShouldAnimate := True;
   FLeft := 0;
   FTop := 0;
 end;
@@ -233,7 +233,7 @@ procedure TWinSplit.CMMouseEnter(var Msg: TMessage);
 begin
   if FShouldAnimate then
   begin
-    FShouldAnimate := false;
+    FShouldAnimate := False;
     GradientRect(color,0);
   end;
 end;
@@ -242,7 +242,7 @@ procedure TWinSplit.CMMouseLeave(var Msg: TMessage);
 begin
   if not FShouldAnimate then
   begin
-    FShouldAnimate := true;
+    FShouldAnimate := True;
     GradientRect(0,color);
   end;
 end;

@@ -178,12 +178,12 @@ begin
   FOnBtnStateChange := nil;
   FFocused := False;
   FbtnVisible := True;
-  FbtnWidth:= 16;
-  FBorderColor:= clblack;
+  FbtnWidth :=  16;
+  FBorderColor :=  clblack;
   FMouseInControl := False;
   FMouseIsDown := False;
   Falignment := taleftjustify;
-  FBtnState:=[];
+  FBtnState := [];
   ParentCtl3D := False;
   Ctl3D := True;
   BevelInner := bvnone;
@@ -279,7 +279,7 @@ end;
 {*****************************************************}
 procedure TCometBtnEdit.WMPaint(var Message: TWMPaint);
 const
-  AlignStyle : array[Boolean, TAlignment] of DWORD =
+  AlignStyle : array [Boolean, TAlignment] of DWORD =
    ((WS_EX_LEFT, WS_EX_RIGHT, WS_EX_LEFT),
     (WS_EX_RIGHT, WS_EX_LEFT, WS_EX_LEFT));
 var
@@ -459,7 +459,7 @@ begin
     CM_MouseLeave:
       begin
         inherited;
-        FmouseinControl := false;
+        FmouseinControl := False;
         Paintedit;
       end;
 
