@@ -24,9 +24,10 @@ type
   published
     property Capt: WideString read FCapt write setcapt;
     property Canvas;
-    property OnPaint: TCmtPaintEvent read FOnPaint write FOnPaint;
     property CaptionLeft: Integer read FCaptLeft write FCaptLeft default 0;
     property CaptTop: Integer read FCaptTop write FCaptTop;
+
+    property OnPaint: TCmtPaintEvent read FOnPaint write FOnPaint;
   end;
 
   TCometPlayerPanel = class(TCometTopicPnl)
@@ -43,8 +44,8 @@ type
   public
     procedure Invalidate_url;
   published
-    property url: string read FUrl write SetUrl;
-    property captionurl: WideString read FUrlCaption write SetCaptionUrl;
+    property Url: string read FUrl write SetUrl;
+    property CaptionUrl: WideString read FUrlCaption write SetCaptionUrl;
     property OnUrlClick: TCmtUrlClickEvent read FOnUrlClick write FOnUrlClick;
   end;
 
