@@ -104,9 +104,8 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\BitTorrent\BDecode.pas"/>
+        <DCCReference Include="..\classes2.pas"/>
         <DCCReference Include="..\BitTorrent\dht_consts.pas"/>
-        <DCCReference Include="..\BitTorrent\dht_int160.pas"/>
-        <DCCReference Include="..\BitTorrent\dht_routingbin.pas"/>
         <DCCReference Include="..\BitTorrent\dht_search.pas"/>
         <DCCReference Include="..\BitTorrent\dht_searchManager.pas"/>
         <DCCReference Include="..\BitTorrent\dht_socket.pas"/>
@@ -116,6 +115,17 @@
         <DCCReference Include="..\BitTorrent\torrentparser.pas"/>
         <DCCReference Include="..\helper_datetime.pas"/>
         <DCCReference Include="..\const_ares.pas"/>
+        <DCCReference Include="..\BitTorrent\dht_int160.pas"/>
+        <DCCReference Include="..\helper_strings.pas"/>
+        <DCCReference Include="..\ares_types.pas"/>
+        <DCCReference Include="..\ares_types_root.pas"/>
+        <DCCReference Include="..\helper_urls.pas"/>
+        <DCCReference Include="..\helper_unicode.pas"/>
+        <DCCReference Include="..\helpeR_ipfunc.pas"/>
+        <DCCReference Include="..\helper_crypt.pas"/>
+        <DCCReference Include="..\securehash.pas"/>
+        <DCCReference Include="..\umediar.pas"/>
+        <DCCReference Include="..\helper_diskio.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

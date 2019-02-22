@@ -36,14 +36,14 @@ uses
   SysUtils, Windows, Synsock;
 
 type
-  CU_INT160=array [0..4] of Cardinal;
-  PCu_INT160=^CU_INT160;
-  PByteArray=^TByteArray;
-  TByteArray=array [0..1023] of Byte;
+  CU_INT160 = array [0..4] of Cardinal;
+  PCu_INT160 = ^CU_INT160;
+  PByteArray = ^TByteArray;
+  TByteArray = array [0..1023] of Byte;
 
 procedure CU_INT160_xor(inValue: PCu_INT160; Value: PCu_INT160);
-function CU_INT160_tohexstr(Value: PCu_INT160; Reversed:Boolean = True ): string;
-function CU_INT160_tohexbinstr(Value: PCu_INT160; doreverse:Boolean=True): string;
+function CU_INT160_tohexstr(Value: PCu_INT160; Reversed: Boolean = True ): string;
+function CU_INT160_tohexbinstr(Value: PCu_INT160; doreverse: Boolean = True): string;
 
 procedure CU_INT160_fill(inValue: PCu_INT160; Value: PCu_INT160); overload;
 procedure CU_Int160_fill(m_data: PCu_INT160; Value: PCu_INT160; numBits: Cardinal); overload;
@@ -61,7 +61,7 @@ procedure CU_Int160_add(m_data: PCu_INT160; Value: Cardinal); overload;
 function CU_INT160_MinorOf(m_data: PCu_INT160; Value: Cardinal): Boolean; overload;
 function CU_INT160_MinorOf(m_data: PCu_INT160; Value: PCu_INT160): Boolean; overload;
 function CU_INT160_Majorof(m_data: PCu_INT160; Value: PCu_INT160): Boolean;
-procedure CU_Int160_toBinaryString(m_data: PCu_INT160; var str: string; trim:Boolean=false);
+procedure CU_Int160_toBinaryString(m_data: PCu_INT160; var str: string; trim: Boolean=false);
 procedure CU_Int160_setValueBE(m_data: PCu_INT160; valueBE:PByteArray);
 procedure CU_INT160_fillNXor(Destination: PCu_INT160; initialValue: PCu_INT160; xorvalue: PCu_INT160);
 procedure CU_INT160_copytoBuffer(source: PCu_INT160; destination:PByteArray);
@@ -69,30 +69,29 @@ procedure CU_INT160_copyFromBuffer(source:PByteArray; destination: PCu_INT160);
 procedure CU_INT160_copyFromBufferRev(source:PByteArray; destination: PCu_INT160);
 
 var
-m_data:CU_INT160;
-
+  m_data: CU_INT160;
 
 implementation
 
 uses
   helper_strings;
 
-procedure CU_INT160_copyFromBuffer(source:PByteArray; destination: PCu_INT160);
+procedure CU_INT160_copyFromBuffer(source: PByteArray; destination: PCu_INT160);
 begin
-  move(source[0],destination[0],4);
-  move(source[4],destination[1],4);
-  move(source[8],destination[2],4);
-  move(source[12],destination[3],4);
-  move(source[16],destination[4],4);
+  move(source[0], destination[0],4);
+  move(source[4], destination[1],4);
+  move(source[8], destination[2],4);
+  move(source[12], destination[3],4);
+  move(source[16], destination[4],4);
 end;
 
-procedure CU_INT160_copyFromBufferRev(source:PByteArray; destination: PCu_INT160);
+procedure CU_INT160_copyFromBufferRev(source: PByteArray; destination: PCu_INT160);
 begin
-  move(source[0],destination[0],4);
-  move(source[4],destination[1],4);
-  move(source[8],destination[2],4);
-  move(source[12],destination[3],4);
-  move(source[16],destination[4],4);
+  move(source[0], destination[0],4);
+  move(source[4], destination[1],4);
+  move(source[8], destination[2],4);
+  move(source[12], destination[3],4);
+  move(source[16], destination[4],4);
   destination[0] := synsock.ntohl(destination[0]);
   destination[1] := synsock.ntohl(destination[1]);
   destination[2] := synsock.ntohl(destination[2]);
@@ -100,13 +99,13 @@ begin
   destination[4] := synsock.ntohl(destination[4]);
 end;
 
-procedure CU_INT160_copytoBuffer(source: PCu_INT160; destination:PByteArray);
+procedure CU_INT160_copytoBuffer(source: PCu_INT160; destination: PByteArray);
 begin
-  move(source[0],destination[0],4);
-  move(source[1],destination[4],4);
-  move(source[2],destination[8],4);
-  move(source[3],destination[12],4);
-  move(source[4],destination[16],4);
+  move(source[0], destination[0],4);
+  move(source[1], destination[4],4);
+  move(source[2], destination[8],4);
+  move(source[3], destination[12],4);
+  move(source[4], destination[16],4);
 end;
 
 procedure CU_INT160_fillNXor(Destination: PCu_INT160; initialValue: PCu_INT160; xorvalue: PCu_INT160);
@@ -129,7 +128,7 @@ end;
 
 procedure CU_Int160_setValueBE(m_data: PCu_INT160; valueBE:PByteArray);
 var
-i: Integer;
+  i: Integer;
 begin
 	m_data[0] := 0;
 	m_data[1] := 0;
@@ -138,26 +137,26 @@ begin
   m_data[4] := 0;
 
 	for i := 0 to 19 do
-  m_data[i div 4] := m_data[i div 4] or (Cardinal(valueBE[i]) shl (8*(3-(i mod 4))));
-
+    m_data[i div 4] := m_data[i div 4] or (Cardinal(valueBE[i]) shl (8*(3-(i mod 4))));
 end;
 
 procedure CU_Int160_shiftLeft(m_data: PCu_INT160; bits: Cardinal);
 var
-temp:CU_INT160;
-indexShift,i: Integer;
-bit64Value,shifted: Int64;
+  temp: CU_INT160;
+  indexShift, i: Integer;
+  bit64Value, shifted: Int64;
 begin
-   if ((bits=0) or
-       ( ((m_data[0]=0) and
-          (m_data[1]=0) and
-          (m_data[2]=0) and
-          (m_data[3]=0) and
-          (m_data[4]=0))
-       )
-       ) then Exit;
+  if ((bits=0) or (
+    ((m_data[0]=0) and
+     (m_data[1]=0) and
+     (m_data[2]=0) and
+     (m_data[3]=0) and
+     (m_data[4]=0))
+    )) then
+    Exit;
 
-	if bits>159 then begin
+	if bits>159 then
+  begin
 		CU_Int160_setValue(m_data,0);
     Exit;
 	end;
@@ -172,7 +171,8 @@ begin
 	shifted := 0;
 
   i := 4;
-  while (i>=indexShift) do begin
+  while (i>=indexShift) do
+  begin
     bit64Value := int64(m_data[i]);
 		shifted := shifted+(bit64Value shl int64(bits mod 32));
 		temp[i-indexShift] := Cardinal(shifted);
@@ -180,8 +180,8 @@ begin
     dec(i);
 	end;
 
-	for i := 0 to 4 do m_data[i] := temp[i];
-
+	for i := 0 to 4 do
+    m_data[i] := temp[i];
 end;
 
 procedure CU_Int160_add(m_data: PCu_INT160; Value: PCu_INT160);
@@ -189,13 +189,14 @@ var
   sum: Int64;
   i: Integer;
 begin
-	if CU_INT160_compareTo(Value,0)=0 then
+	if CU_INT160_compareTo(Value,0) = 0 then
     Exit;
 
 	sum := 0;
-	for i := 4 downto 0 do begin
-		sum := sum+m_data[i];
-		sum := sum+Value[i];
+	for i := 4 downto 0 do
+  begin
+		sum := sum + m_data[i];
+		sum := sum + Value[i];
 		m_data[i] := Cardinal(sum);
 		sum := sum shr 32;
 	end;
@@ -234,7 +235,8 @@ begin
 	ulongNum := bit div 32;
 	shift := 31-(bit mod 32);
 	m_data[ulongNum] := m_data[ulongNum] or (1 shl shift);
-	if Value=0 then m_data[ulongNum] := m_data[ulongNum] xor (1 shl shift);
+	if Value=0 then
+    m_data[ulongNum] := m_data[ulongNum] xor (1 shl shift);
 end;
 
 function CU_INT160_compareTo(m_data: PCu_INT160; Value: Cardinal): Integer;
@@ -243,12 +245,14 @@ begin
       (m_data[1]>0) or
       (m_data[2]>0) or
       (m_data[3]>0) or
-      (m_data[4]>Value)) then begin
+      (m_data[4]>Value)) then
+  begin
 		Result := 1;
     Exit;
   end;
 
-	if m_data[4]<Value then begin
+	if m_data[4]<Value then
+  begin
 		Result := -1;
     Exit;
   end;
@@ -291,33 +295,37 @@ var
 begin
 	// Copy the whole ULONGs
 	numULONGs := numBits div 32;
-	for i := 0 to numULONGs-1 do begin
+	for i := 0 to numULONGs - 1 do
    m_data[i] := Value[i];
-  end;
 
 	// Copy the remaining bits
-	for i := (32*numULONGs) to numBits-1 do CU_INT160_setBitNumber(m_data,i, CU_INT160_getBitNumber(Value,i));
+	for i := (32*numULONGs) to numBits-1 do
+    CU_INT160_setBitNumber(m_data,i, CU_INT160_getBitNumber(Value,i));
+
 	// Pad with random bytes (Not seeding based on time to allow multiple different ones to be created in quick succession)
-	for i := numBits to 159 do CU_INT160_setBitNumber(m_data,i, (random(2)));
+	for i := numBits to 159 do
+    CU_INT160_setBitNumber(m_data,i, (random(2)));
 end;
 
-procedure CU_Int160_toBinaryString(m_data: PCu_INT160; var str: string; trim:Boolean=false);
+procedure CU_Int160_toBinaryString(m_data: PCu_INT160; var str: string; trim: Boolean = false);
 var
   b, i: Integer;
 begin
 	str := '';
 
-	for i := 0 to 159 do begin
-		b := CU_Int160_getBitNumber(m_data,i);
-		if ((not trim) or (b<>0)) then begin
-			str := str+Format('%d',[b]);
+	for i := 0 to 159 do
+  begin
+		b := CU_Int160_getBitNumber(m_data, i);
+		if ((not trim) or (b<>0)) then
+    begin
+			str := str + Format('%d',[b]);
 			trim := False;
 		end;
 	end;
 	if length(str)=0 then str := '0';
 end;
 
-function CU_INT160_tohexbinstr(Value: PCu_INT160; doreverse:Boolean=True): string;
+function CU_INT160_tohexbinstr(Value: PCu_INT160; doreverse: Boolean=True): string;
 var
   num: Cardinal;
 begin
@@ -346,7 +354,7 @@ begin
 //Result := Result;
 end;
 
-function CU_INT160_tohexstr(Value: PCu_INT160; Reversed:Boolean = True): string;
+function CU_INT160_tohexstr(Value: PCu_INT160; Reversed: Boolean = True): string;
 var
   num: Cardinal;
 begin

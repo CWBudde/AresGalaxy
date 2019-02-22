@@ -27,12 +27,12 @@ unit helper_ipfunc;
 interface
 
 uses
- classes,classes2,ares_types,helper_strings,sysutils,synsock,winsock,blcksock,
- helper_crypt,vars_global,class_cmdlist,windows;
+  Classes, Windows, Classes2, Sysutils, Synsock, Winsock, Blcksock,
+  Helper_strings, Helper_crypt, Ares_types, vars_global, class_cmdlist;
 
 const
-   LOW_IP_LIMIT=1;
-   HIGH_IP_LIMIT=223;
+  LOW_IP_LIMIT = 1;
+  HIGH_IP_LIMIT = 223;
 
 function ip_firewalled(ipC: Cardinal): Boolean; overload;
 function ip_firewalled(const ipS: string): Boolean; overload;
@@ -54,12 +54,12 @@ function serialize_myConDetails: string;
 function isBlockedChat(ip: Cardinal): Boolean;
 
 var
-lista_banned_ip: Tnapcmdlist;
+  lista_banned_ip: Tnapcmdlist;
 
 implementation
 
 uses
-ufrmmain,mysupernodes,const_ares;
+  ufrmmain, mysupernodes, const_ares;
 
 function inet_addr; external 'wsock32.dll' name 'inet_addr';
 function inet_ntoa; external 'wsock32.dll' name 'inet_ntoa';
@@ -85,7 +85,7 @@ var
 buff: array [0..3] of Byte;
 begin
 
-result := False;
+Result := False;
 move(ip,buff[0],4);
 
 case buff[0] of
@@ -283,7 +283,7 @@ begin
        Result := ((buff[2]>=224) and (buff[2]<=239)); // FUZION COLO NV    72.35.224.0 - 72.35.239.255
      end;
    end;
-   142: Result := (buff[1]=162); // Stentor National 142.162.0.0 - 142.162.255.255 
+   142: Result := (buff[1]=162); // Stentor National 142.162.0.0 - 142.162.255.255
    154: Result := (buff[1]=37);   // PERFORMANCE SYSTEM 154.37.0.0 - 154.37.255.255
    204:begin
          if buff[1]=11 then begin
@@ -332,9 +332,9 @@ if lista_banned_ip=nil then begin
  exit;
 end;
 
-result := (lista_banned_ip.FindById(ip)<>-1);
+Result := (lista_banned_ip.FindById(ip)<>-1);
 except
-result := False;
+Result := False;
 end;
 end;
 
@@ -343,7 +343,7 @@ function resolve_name_to_ip(dns: string): string;
 var
 lista: TMyStringList;
 begin
-result := '';
+Result := '';
    lista := tmyStringList.create;  //otteniamo ip reale per cript decript
   ResolveNameToIP(dns,lista);
   if lista.count<1 then begin
@@ -380,12 +380,12 @@ if ((stringa[i]<>'0') and (stringa[i]<>'1') and
 (stringa[i]<>'6') and (stringa[i]<>'7') and
 (stringa[i]<>'8') and (stringa[i]<>'9') and
 (stringa[i]<>'.')) then begin
-result := False;
+Result := False;
 exit;
 end else if stringa[i]='.' then inc(puntini);
 end;
 
-result := (puntini=3);
+Result := (puntini=3);
 end;
 
 function headercrypt_to_aresip(str: string): string;
@@ -404,7 +404,7 @@ str := d54(str,3617);
                port_server := chars_2_word(copy(str,5,2));
                ip := chars_2_dword(copy(str,7,4));
                port := chars_2_word(copy(str,11,2));
-result := ipint_to_dotstring(ip_server)+':'+inttostr(port_server)+'|'+
+Result := ipint_to_dotstring(ip_server)+':'+inttostr(port_server)+'|'+
         ipint_to_dotstring(ip)+':'+inttostr(port);
 end;
 
@@ -414,9 +414,9 @@ str: string;
 begin
 try
 str := int_2_dword_string(ip);
-result := '';
-for i := 1 to length(str) do Result := result+inttohex(ord(str[i]),2);
-result := lowercase(result);
+Result := '';
+for i := 1 to length(str) do Result := Result+inttohex(ord(str[i]),2);
+Result := lowercase(Result);
 except
 end;
 end;
@@ -426,12 +426,12 @@ var
 ipi: Integer;
 begin
 ipi := inet_addr(PChar(ip));
-result := STR_ANON+ip_to_hex_str(ipi);
+Result := STR_ANON+ip_to_hex_str(ipi);
 end;
 
 function ipint_to_anonick(ip: Cardinal): string;
 begin
-result := STR_ANON+ip_to_hex_str(ip);
+Result := STR_ANON+ip_to_hex_str(ip);
 end;
 
 function ipint_to_dotstring(ip: Cardinal): string;
@@ -478,34 +478,38 @@ end;
 
 function ip_firewalled(ipC: Cardinal): Boolean;
 var
-buffer: array [0..3] of Byte;
+  buffer: array [0..3] of Byte;
 begin
-result := False;
+  Result := False;
 
-move(ipC,buffer[0],4);
+  move(ipC,buffer[0],4);
 
-if buffer[0]>HIGH_IP_LIMIT then begin
- Result := True;
- exit;
-end;
-if buffer[0]<LOW_IP_LIMIT then begin
- Result := True;
- exit;
-end;
-
- case buffer[0] of
-  10: Result := True;
-  127: Result := ((buffer[1]=0) and (buffer[2]=0) and (buffer[3]=1));
-  192: Result := (buffer[1]=168);
-  172: Result := ((buffer[1]>=16) and (buffer[1]<=32));
+  if buffer[0]>HIGH_IP_LIMIT then
+  begin
+    Result := True;
+    exit;
+  end;
+  if buffer[0]<LOW_IP_LIMIT then
+  begin
+    Result := True;
+    exit;
   end;
 
-
+  case buffer[0] of
+    10:
+      Result := True;
+    127:
+      Result := ((buffer[1]=0) and (buffer[2]=0) and (buffer[3]=1));
+    192:
+      Result := (buffer[1]=168);
+    172:
+      Result := ((buffer[1]>=16) and (buffer[1]<=32));
+  end;
 end;
 
 function ip_firewalled(const ipS: string): Boolean;
 begin
-result := ip_firewalled(inet_addr(PChar(ipS)));
+  Result := ip_firewalled(inet_addr(PChar(ipS)));
 end;
 
 end.

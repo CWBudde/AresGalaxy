@@ -27,160 +27,89 @@ unit ares_types;
 interface
 
 uses
- Windows, Classes, SysUtils, blcksock, Graphics,
- synsock,const_ares,classes2,comettrees,buttons,comctrls,class_cmdlist,
- DirectDraw,ares_objects,tntforms,
-  Directshow9,TntMenus,
-  SyncObjs,tntcomctrls,tntstdctrls,tntbuttons,extctrls,WinSplit,xpbutton,
-  tntextctrls,comettopicpnl,cometPageView,
-  ActiveX;
+  Windows, Classes, SysUtils, BlckSock, Graphics, SynSock,
+  const_ares, ares_types_root, Classes2, CometTrees, Buttons, ExtCtrls, Comctrls,
+  Class_cmdlist, DirectDraw, Directshow9, Ares_objects, TntForms,
+  TntMenus, SyncObjs, TntComctrls, TntStdCtrls, TntButtons, WinSplit, XPButton,
+  TntExtctrls, CometTopicPnl, CometPageView, ActiveX;
 
-  type tnetStreamType=(nsTRoot,nsTMovies,nsTTv,nsTUnknown);
-
-  type
-  precordNetStreamChannel=^recordNetStreamChannel;
-  recordNetStreamChannel=record
-   language: string;
-   streamUrl: WideString;
-   streamPlaypath: WideString;
-   webCapt: WideString;
-   webUrl: string;
-   capt: WideString;
+type
+  PRecord_chatProcessData=^Record_chatProcessData;
+  Record_chatProcessData=record
+    wnhandle: THandle;
+    procID: DWord;
+    FAppThreadID: Cardinal;
+    containerPnl: TPanel;
+    oldParentWn: THandle;
+    hasFocus: Boolean;
+    initialized: Boolean;
+    ip: Cardinal;
   end;
 
-  precord_chatProcessData=^record_chatProcessData;
-  record_chatProcessData=record
-   wnhandle: Thandle;
-   procID:dword;
-   FAppThreadID: Cardinal;
-   containerPnl: Tpanel;
-   oldParentWn: THandle;
-   hasFocus: Boolean;
-   initialized: Boolean;
-   ip: Cardinal;
+  PRecord_relayed_chat_form=^Record_relayed_chat_form;
+  Record_relayed_chat_form=record
+    frm: Pointer;
+    supernode: Pointer;
+    id: Cardinal;
+    packetsout: TMyStringList;
+    packetin: TMyStringList;
+    disconnected: Boolean;
+    windowclosed: Boolean;
+    hasnotifyclose_toremotepeer: Boolean;
   end;
 
-  type
-  tdatanodetype=(dnt_Null,
-                 dnt_download,
-                 dnt_PartialUpload,
-                 dnt_PartialDownload,
-                 dnt_downloadSource,
-                 dnt_upload,
-                 dnt_bittorrentMain,
-                 dnt_bittorrentSource);
-  type
-  precord_data_node=^record_data_node;
-  record_data_node=record
-   m_type: Tdatanodetype;
-   data: Pointer;
-  end;
-  
-  type
-  targuments=array of string;
 
-  type
-  precord_relayed_chat_form=^record_relayed_chat_form;
-  record_relayed_chat_form=record
-   frm: Pointer;
-   supernode: Pointer;
-   id: Cardinal;
-   packetsout: TMyStringList;
-   packetin: TMyStringList;
-   disconnected: Boolean;
-   windowclosed: Boolean;
-   hasnotifyclose_toremotepeer: Boolean;
-  end;
+  //GUI tab status
+  TStato_tab_gui = (
+    GUI_Web,
+    GUI_Library,
+    GUI_Screen,
+    GUI_Search,
+    GUI_Transfer,
+    GUI_Chat,
+    GUI_Options
+  );
 
-  type
-  precord_httpheader_item=^record_httpheader_item;
-  record_httpheader_item=record
-  key: string;
-  value: string;
-  end;
-
-  type  //GUI tab status
-  tstato_tab_gui=(GUI_Web,
-                  GUI_Library,
-                  GUI_Screen,
-                  GUI_Search,
-                  GUI_Transfer,
-                  GUI_Chat,
-                  GUI_Options);
-
-
-  type  // string structure for library categs
-precord_string=^record_string;
-record_string=record
- str: string;
- counter: Integer;
- crc: Word;
- len: Byte;
-end;
-  
- type  // private chat, connect to user's supernode and ask for a reverse (push) connection back to us
- precord_pushed_chat_request=^record_pushed_chat_request;
- record_pushed_chat_request=record
-  randoms: string;
-  issued: Cardinal;
-  socket: Ttcpblocksocket;
+type  // private chat, connect to user's supernode and ask for a reverse (push) connection back to us
+  precord_pushed_chat_request=^record_pushed_chat_request;
+  record_pushed_chat_request=record
+    randoms: string;
+    issued: Cardinal;
+    socket: Ttcpblocksocket;
  end;
- type HINTERNET=pointer;
-    type //helper visual headers
-  Tcolumn_type=(COLUMN_TITLE,
-                COLUMN_ARTIST,
-                COLUMN_CATEGORY,
-                COLUMN_ALBUM,
-                COLUMN_TYPE,
-                COLUMN_SIZE,
-                COLUMN_DATE,
-                COLUMN_LANGUAGE,
-                COLUMN_VERSION,
-                COLUMN_QUALITY,
-                COLUMN_COLORS,
-                COLUMN_LENGTH,
-                COLUMN_RESOLUTION,
-                COLUMN_STATUS,
-                COLUMN_FILENAME,
-                COLUMN_INPROGRESS,
-                COLUMN_NULL,
-                COLUMN_YOUR_LIBRARY,
-                COLUMN_MEDIATYPE,
-                COLUMN_FORMAT,
-                COLUMN_FILETYPE,
-                COLUMN_USER,
-                COLUMN_FILEDATE);
 
- type  //helper visual headers
-  tstato_search_header=array [0..10] of tcolumn_type;
-  tstato_library_header=array [0..10] of tcolumn_type;
-  tstato_header_chat=array [0..9] of tcolumn_type;
+type //helper visual headers
+  TColumn_type=(
+    COLUMN_TITLE,
+    COLUMN_ARTIST,
+    COLUMN_CATEGORY,
+    COLUMN_ALBUM,
+    COLUMN_TYPE,
+    COLUMN_SIZE,
+    COLUMN_DATE,
+    COLUMN_LANGUAGE,
+    COLUMN_VERSION,
+    COLUMN_QUALITY,
+    COLUMN_COLORS,
+    COLUMN_LENGTH,
+    COLUMN_RESOLUTION,
+    COLUMN_STATUS,
+    COLUMN_FILENAME,
+    COLUMN_INPROGRESS,
+    COLUMN_NULL,
+    COLUMN_YOUR_LIBRARY,
+    COLUMN_MEDIATYPE,
+    COLUMN_FORMAT,
+    COLUMN_FILETYPE,
+    COLUMN_USER,
+    COLUMN_FILEDATE
+  );
 
-
-
-
-
-
-  //thread client, structure for HASH source/resume search
-  precord_download_hash=^record_download_hash;
-   record_download_hash=record
-    hash: string;
-    crchash: Word;
-    handle_download: Cardinal;
-   end;
-
-   type  //thread_client avoid some dead loop while adding/removing hosts in discovery
-   precord_nodo_provato=^record_nodo_provato;
-   record_nodo_provato=record
-    host: string;
-    when: Cardinal;
-    isBad: Boolean;
-   end;
-   
-    type
-  Tsocks_type=(SoctNone,
-               SoctSock4,
-               SoctSock5);
+type
+  //helper visual headers
+  TStato_search_header=array [0..10] of TColumn_type;
+  TStato_library_header=array [0..10] of TColumn_type;
+  TStato_header_chat=array [0..9] of TColumn_type;
 
   type  //thread_upload don't accept too many chat request from single ips
   precord_ip_accepted_chat=^record_ip_accepted_chat;
@@ -479,16 +408,6 @@ end;
    his_agent: string;
   end;
 
-
-type  // string parse helper structure
-precord_title_album_artist=^record_title_album_artist;
-record_title_album_artist=record
- artist,
- album,
- title: WideString;
-end;
-
-
 type    // from client to upload (client receive it from supernode, then upload perform connection to deliver push)
  precord_push_to_go=^record_push_to_go;
  record_push_to_go=record
@@ -534,7 +453,7 @@ record_panel_search=record
  backup_results: TMylist;
  search_string: string;
  listview: Tcomettree;
- stato_header: Tstato_search_header;
+ stato_header: TStato_search_header;
  containerPanel: Tpanel;
  pnl: TCometPagePanel;
  numresults,numhits: Word;

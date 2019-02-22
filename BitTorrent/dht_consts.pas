@@ -33,10 +33,10 @@ unit dht_consts;
 interface
 
 uses
-  dht_int160, classes2;
+  Dht_int160, Classes2;
 
 type
-  tmdhtsearchtype=(
+  TMDhtSearchType = (
     UNDEFINED,
     NODE,
 		NODECOMPLETE,
@@ -44,35 +44,35 @@ type
 	);
 
 const
-  MDHT_TYPE_ERROR=0;
-  MDHT_TYPE_QUERY=1;
-  MDHT_TYPE_REPLY=2;
+  MDHT_TYPE_ERROR = 0;
+  MDHT_TYPE_QUERY = 1;
+  MDHT_TYPE_REPLY = 2;
 
-  MDHT_K8						                    = 10;
-  MDHT_KPINGABLE                         = 4;
-  MDHT_KBASE						                  = 4;
-  MDHT_KK						                  	= 5;
-  MDHT_ALPHA_QUERY	   				            = 3;
-  MDHT_LOG_BASE_EXPONENT			            = 5;
-  MDHT_SEARCH_LIFETIME				            = 45;
-  MDHT_SEARCHNODE_LIFETIME			          = 45;
-  MDHT_SEARCHNODECOMP_LIFETIME		        = 10;
-  MDHT_SEARCHFINDSOURCE_LIFETIME	        = 80;
-  MDHT_SEARCHNODECOMP_TOTAL		          = 10;
-  MDHT_SEARCHFINDSOURCE_TOTAL		        = 60;
+  MDHT_K8						             = 10;
+  MDHT_KPINGABLE                 = 4;
+  MDHT_KBASE						         = 4;
+  MDHT_KK						             = 5;
+  MDHT_ALPHA_QUERY	   				   = 3;
+  MDHT_LOG_BASE_EXPONENT			   = 5;
+  MDHT_SEARCH_LIFETIME				   = 45;
+  MDHT_SEARCHNODE_LIFETIME			 = 45;
+  MDHT_SEARCHNODECOMP_LIFETIME	 = 10;
+  MDHT_SEARCHFINDSOURCE_LIFETIME = 80;
+  MDHT_SEARCHNODECOMP_TOTAL		   = 10;
+  MDHT_SEARCHFINDSOURCE_TOTAL		 = 60;
   MDHT_SEARCH_TOLERANCE = 16777216;
 
 
-  MDHT_DISCONNECTDELAY	            = 1200;	//20 mins in seconds
+  MDHT_DISCONNECTDELAY = 1200;	//20 mins in seconds
 
-  MDHT_ACTION_NONE=0;
-  MDHT_PING_REQ=1;
-  MDHT_GETPEER_REQ=2;
-  MDHT_FINDNODE_REQ=3;
-  MDHT_ANNOUNCEPEER_REQ=4;
+  MDHT_ACTION_NONE = 0;
+  MDHT_PING_REQ = 1;
+  MDHT_GETPEER_REQ = 2;
+  MDHT_FINDNODE_REQ = 3;
+  MDHT_ANNOUNCEPEER_REQ = 4;
 
 type
-  tmdhtbucket = class(tobject)
+  TMDhtBucket = class(TObject)
     ipC: Cardinal;
     portW: Word;
     id:CU_INT160;
@@ -91,8 +91,8 @@ type
     procedure updateType;
   end;
 
-  precord_mdht_announced_torrent=^record_mdht_announced_torrent;
-  record_mdht_announced_torrent=record
+  PRecord_mdht_announced_torrent = ^Record_mdht_announced_torrent;
+  Record_mdht_announced_torrent = record
     hash: string;
     last: Cardinal;
     clients: TMyStringList;
@@ -103,7 +103,8 @@ implementation
 uses
   helper_datetime;
 
-procedure tmdhtbucket.init(const clientID:pCU_Int160; ip: Cardinal; udpPort: Word; const target:pCU_Int160);
+procedure TMDhtBucket.init(const clientID: pCU_Int160; ip: Cardinal;
+  udpPort: Word; const target:pCU_Int160);
 begin
 	CU_INT160_Fill(@ID,clientID);
   CU_INT160_FillNXor(@m_distance,@ID,target);
@@ -111,7 +112,7 @@ begin
 	portW := udpPort;
 end;
 
-constructor tmdhtbucket.create;
+constructor TMDhtBucket.create;
 begin
 	m_type := 3;
 	m_expires := 0;
@@ -121,7 +122,7 @@ begin
   m_rtt := 0;
 end;
 
-procedure tmdhtbucket.checkingType;
+procedure TMDhtBucket.checkingType;
 begin
 	if ((time_now-m_lastTypeSet<10) or
       (m_type=4)) then exit;
@@ -132,27 +133,28 @@ begin
 	inc(m_type);
 end;
 
-procedure tmdhtbucket.updateType;
+procedure TMDhtBucket.updateType;
 var
-hours: Cardinal;
+  hours: Cardinal;
 begin
-
 	hours := (time_now-m_created) div HR2S(1);
 	case hours of
-		0:begin
-			m_type := 2;
-			m_expires := time_now+HR2S(1);
-    end;
-		1:begin
-			m_type := 1;
-			m_expires := time_now+HR2S(1.5);
-		end else begin
-			m_type := 0;
-			m_expires := time_now+HR2S(2);
-     end;
+		0:
+      begin
+			  m_type := 2;
+  			m_expires := time_now+HR2S(1);
+      end;
+		1:
+      begin
+			  m_type := 1;
+  			m_expires := time_now+HR2S(1.5);
+		  end
+    else
+      begin
+			  m_type := 0;
+        m_expires := time_now+HR2S(2);
+      end;
   end;
-
 end;
-
 
 end.

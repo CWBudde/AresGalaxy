@@ -44,17 +44,9 @@ uses
   SysUtils, Windows, Classes;
 
 type
-
-{ TMyList class }
-
   PPointerList = ^TPointerList;
   TPointerList = array [0..MaxListSize - 1] of Pointer;
   TListSortCompare = function (Item1, Item2: Pointer): Integer;
-
- // TmyList=Tlist;
-//  TMyStringList=TStringList;
-
-//implementation
 
   TMyList = class(TObject)
   private
@@ -213,16 +205,16 @@ type
 
 implementation
 
-uses Consts, TypInfo;
+uses
+  Consts, TypInfo;
 
 // TMyList
 
 constructor TMyList.Create;
 begin
- inherited;
-// GrowDelta := DefaultGrowDelta;
- FCapacity := 0;
- FCount := 0;
+  inherited;
+  FCapacity := 0;
+  FCount := 0;
 end;
 
 destructor TMyList.Destroy;
@@ -234,7 +226,8 @@ end;
 function TMyList.Add(Item: Pointer): Integer;
 begin
   Result := FCount;
-  if Result = FCapacity then Grow;
+  if Result = FCapacity then
+    Grow;
   FList^[Result] := Item;
   Inc(FCount);
 end;
@@ -295,23 +288,33 @@ end;
 
 procedure TMyList.Grow;
 begin
-  if FCapacity<64 then SetCapacity(FCapacity+8)
-  else if FCapacity<256 then SetCapacity(FCapacity+32)
-  else if FCapacity<1024 then SetCapacity(FCapacity+64)
-  else SetCapacity(FCapacity+128);
+  if FCapacity < 64 then
+    SetCapacity(FCapacity + 8)
+  else
+  if FCapacity < 256 then
+    SetCapacity(FCapacity + 32)
+  else
+  if FCapacity < 1024 then
+    SetCapacity(FCapacity + 64)
+  else
+    SetCapacity(FCapacity + 128);
 end;
 
 function TMyList.IndexOf(Item: Pointer): Integer;
 begin
   Result := 0;
-  while (Result < FCount) and (FList^[Result] <> Item) do Inc(Result);
-  if Result = FCount then Result := -1;
+  while (Result < FCount) and (FList^[Result] <> Item) do
+    Inc(Result);
+  if Result = FCount then
+    Result := -1;
 end;
 
 procedure TMyList.Insert(Index: Integer; Item: Pointer);
 begin
-  if (Index < 0) or (Index > FCount) then Error('', Index);
-  if FCount = FCapacity then Grow;
+  if (Index < 0) or (Index > FCount) then
+    Error('', Index);
+  if FCount = FCapacity then
+    Grow;
   if Index < FCount then
     System.Move(FList^[Index], FList^[Index + 1],
       (FCount - Index) * SizeOf(Pointer));

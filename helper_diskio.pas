@@ -27,32 +27,33 @@ unit helper_diskio;
 interface
 
 uses
- ares_types,windows,tntwindows,sysutils,classes2,helper_unicode,
- classes,ActiveX,ShlObj,shellapi{,TntStdCtrls},ufrm_settings;
+ Classes, Windows, SysUtils, ActiveX, ShlObj, ShellApi,
+ Classes2, Helper_unicode {,TntStdCtrls, tntwindows,}
+ ares_types, ufrm_settings;
 
 const
- ARES_READONLY_ACCESS                   =0;
- ARES_WRITE_EXISTING                    =1;
- ARES_OVERWRITE_EXISTING                =2;
- ARES_TRUNCATE_EXISTING                 =3;
- ARES_CREATE_ALWAYSAND_WRITETHROUGH     =10;
- ARES_READONLY_BUT_SEQUENTIAL           =11;
- ARES_WRITEEXISTING_WRITETHROUGH        =12;
- ARES_WRITE_EXISTING_BUT_SEQUENTIAL     =13;
- ARES_OVERWRITE_EXISTING_BUT_SEQUENTIAL =14;
+  ARES_READONLY_ACCESS                   =0;
+  ARES_WRITE_EXISTING                    =1;
+  ARES_OVERWRITE_EXISTING                =2;
+  ARES_TRUNCATE_EXISTING                 =3;
+  ARES_CREATE_ALWAYSAND_WRITETHROUGH     =10;
+  ARES_READONLY_BUT_SEQUENTIAL           =11;
+  ARES_WRITEEXISTING_WRITETHROUGH        =12;
+  ARES_WRITE_EXISTING_BUT_SEQUENTIAL     =13;
+  ARES_OVERWRITE_EXISTING_BUT_SEQUENTIAL =14;
 
-faanyfile=$0000003f;
+  faanyfile=$0000003f;
 
   DRIVE_UNKNOWN = 0;
   DRIVE_NO_ROOT_DIR = 1;
   DRIVE_REMOVABLE = 2;
   DRIVE_FIXED = 3;
   DRIVE_REMOTE = 4;
-  DRIVE_CDROM = 5;    
+  DRIVE_CDROM = 5;
   DRIVE_RAMDISK = 6;
 
-TooDangerousExtensions='.lnk .reg .com .pif .vb .vbe .vbs .bas .cmd .cpl .hta .js .jse .inf .ins .isp .crt .shs .shb .sct .wsc .wsf .wsh .asp .pcd .mst .msc';
-DangerousExtensions='.exe .dll .bat .hlp .chm .scr .url .doc .xls .ppt .msi .msp .mdb .mde .ade .adp';
+  TooDangerousExtensions='.lnk .reg .com .pif .vb .vbe .vbs .bas .cmd .cpl .hta .js .jse .inf .ins .isp .crt .shs .shb .sct .wsc .wsf .wsh .asp .pcd .mst .msc';
+  DangerousExtensions='.exe .dll .bat .hlp .chm .scr .url .doc .xls .ppt .msi .msp .mdb .mde .ade .adp';
 
 procedure FreeHandleStream(var stream: Thandlestream);
 function MyFileOpen(Filename: widestring; mode:integer): ThandleStream; overload;
@@ -83,19 +84,18 @@ function MyFileSeek(stream: THandleStream; const Offset: Int64; Origin: Integer)
 function getLastModifiedW(TheFile: WideString): Cardinal;
 function mycopyFileW(const srcfilename: WideString; const dstFilename: WideString): Boolean;
 
+type
+  pSetFilePointerEx = function (hFile: THandle; lDistanceToMove: int64; lpNewFilePointer: Pointer; dwMoveMethod: DWORD): BOOL; stdcall;
 
-  type
- pSetFilePointerEx = function (hFile: THandle; lDistanceToMove: int64; lpNewFilePointer: Pointer; dwMoveMethod: DWORD): BOOL; stdcall;
-
-  var
- kern32handle:hwnd;
- SetFilePointerEx:pSetFilePointerEx;
+var
+  kern32handle:hwnd;
+  SetFilePointerEx:pSetFilePointerEx;
 
 implementation
 
 uses
- vars_global,ufrmmain,vars_localiz,const_ares,
- helper_urls,utility_ares,helper_datetime;
+  vars_global, ufrmmain, vars_localiz, const_ares,
+  helper_urls, utility_ares, helper_datetime;
 
 
 function mycopyFileW(const srcfilename: WideString; const dstFilename: WideString): Boolean;
@@ -855,9 +855,10 @@ end;
 
 function Tnt_GetDiskFreeSpaceExW(lpRootPathName: PWideChar; var FreeAvailable, TotalSpace: TLargeInteger; TotalFree: PLargeInteger): Bool;
 begin
-  if Win32Platform=VER_PLATFORM_WIN32_NT then Result := GetDiskFreeSpaceExW(lpRootPathName, FreeAvailable, TotalSpace,TotalFree)
-   else Result := GetDiskFreeSpaceExA(PAnsiChar(AnsiString(lpRootPathName)), FreeAvailable, TotalSpace,TotalFree);
+  if Win32Platform=VER_PLATFORM_WIN32_NT then
+    Result := GetDiskFreeSpaceExW(lpRootPathName, FreeAvailable, TotalSpace,TotalFree)
+  else
+    Result := GetDiskFreeSpaceExA(PAnsiChar(AnsiString(lpRootPathName)), FreeAvailable, TotalSpace,TotalFree);
 end;
 
 end.
-

@@ -27,8 +27,10 @@ unit umediar;
 interface
 
 uses
- Classes, SysUtils, utility_ares,windows,helper_unicode,helper_diskio,helper_strings,ares_types,ares_objects,math,
- TntSysUtils,  DirectDraw, Directshow9, Dspack,olectrls,SyncObjs,comobj,ShlObj,graphics,forms,tntwindows,classes2;
+ Classes, SysUtils, Windows, Math, OleCtrls, SyncObjs, ComObj, ShlObj,
+ Graphics, Forms, helper_unicode, helper_diskio,
+ helper_strings, utility_ares, ares_types, ares_objects,
+ TntSysUtils, DirectDraw, Directshow9, Dspack, tntwindows,classes2;
 
 
 function ricava_dati_mov(nomefile: WideString):record_audioinfo;
@@ -42,16 +44,14 @@ function ottieni_data_exe(nome: WideString): string;
 function MyGetModuleFileNameW(hModule: HINST; lpFilename: PWideChar; nSize: DWORD): widestring;
 function get_app_name: WideString;
 
-
-
 ///////////////////////////////////////////////IMAGES
 const
-TIFF_WIDTH = 256;
-TIFF_HEIGHT = 257;
-TIFF_BITSPERSAMPLE = 258;
-TIFF_BYTE = 1;
-TIFF_WORD = 3;
-TIFF_DWORD = 4;
+  TIFF_WIDTH = 256;
+  TIFF_HEIGHT = 257;
+  TIFF_BITSPERSAMPLE = 258;
+  TIFF_BYTE = 1;
+  TIFF_WORD = 3;
+  TIFF_DWORD = 4;
 
 const
   { Tag ID }
@@ -6380,36 +6380,35 @@ end;
 
 procedure TMP4Parser.read_avc1(lenAvailable: Cardinal);
 var
- buffer: array of Byte;
- offset: Integer;
- tmp1,tmp2: array [0..1] of Byte;
- tmpwidth,tmpheight: Word;
+  buffer: array of Byte;
+  offset: Integer;
+  tmp1,tmp2: array [0..1] of Byte;
+  tmpwidth,tmpheight: Word;
 begin
-if lenAvailable<28 then exit;
+  if lenAvailable<28 then exit;
 
-SetLength(buffer,lenAvailable);
+  SetLength(buffer,lenAvailable);
 
-bufferHeader.read(buffer[0],lenAvailable);
+  bufferHeader.read(buffer[0],lenAvailable);
 
-offset := 4; //skip flags+version
-inc(offset,20);
- move(buffer[offset],tmp1[0],2);
- tmp2[0] := tmp1[1];
- tmp2[1] := tmp1[0];
- move(tmp2[0],tmpwidth,2);
-inc(offset,2);
- move(buffer[offset],tmp1[0],2);
- tmp2[0] := tmp1[1];
- tmp2[1] := tmp1[0];
- move(tmp2[0],tmpheight,2);
+  offset := 4; //skip flags+version
+  inc(offset,20);
+  move(buffer[offset],tmp1[0],2);
+  tmp2[0] := tmp1[1];
+  tmp2[1] := tmp1[0];
+  move(tmp2[0],tmpwidth,2);
+  inc(offset,2);
+  move(buffer[offset],tmp1[0],2);
+  tmp2[0] := tmp1[1];
+  tmp2[1] := tmp1[0];
+  move(tmp2[0],tmpheight,2);
 
  //log('readAVC1'+inttostr(tmpwidth)+' '+inttostr(tmpheight));
- if (tmpwidth>0) and (tmpheight>0) then begin
-  fwidth := tmpwidth;
-  fheight := tmpheight;
- end;
-
-
+  if (tmpwidth>0) and (tmpheight>0) then
+  begin
+   fwidth := tmpwidth;
+   fheight := tmpheight;
+  end;
 end;
 
 procedure TMP4Parser.read_tkhd(lenAvailable: Cardinal);
@@ -6417,180 +6416,77 @@ var
  buffer: array of Byte;
  offset: Integer;
  tmp1,tmp2: array [0..3] of Byte;
- tmpwidth,tmpheight: Cardinal;
+ tmpwidth, tmpheight: Cardinal;
 begin
-if lenAvailable<82 then exit;
-SetLength(buffer,lenAvailable);
-bufferHeader.read(buffer[0],lenAvailable);
-offset := 4; //skip flags+version
-inc(offset,8); //skip creation time + modification time
-inc(offset,12); //skip trackID,reserved,duration
-inc(offset,9); //skip reserved,layer,alt group,volume,reserved
-inc(offset,41); //skip matrix
+  if lenAvailable<82 then exit;
+  SetLength(buffer,lenAvailable);
+  bufferHeader.read(buffer[0],lenAvailable);
+  offset := 4; //skip flags+version
+  inc(offset,8); //skip creation time + modification time
+  inc(offset,12); //skip trackID,reserved,duration
+  inc(offset,9); //skip reserved,layer,alt group,volume,reserved
+  inc(offset,41); //skip matrix
 
-move(buffer[offset],tmp1[0],4);
-tmp2[0] := tmp1[3];
-tmp2[1] := tmp1[2];
-tmp2[2] := tmp1[1];
-tmp2[3] := tmp1[0];
-move(tmp2,tmpwidth,4);
-inc(offset,4);
+  move(buffer[offset],tmp1[0],4);
+  tmp2[0] := tmp1[3];
+  tmp2[1] := tmp1[2];
+  tmp2[2] := tmp1[1];
+  tmp2[3] := tmp1[0];
+  move(tmp2,tmpwidth,4);
+  inc(offset,4);
 
-move(buffer[offset],tmp1[0],4);
-tmp2[0] := tmp1[3];
-tmp2[1] := tmp1[2];
-tmp2[2] := tmp1[1];
-tmp2[3] := tmp1[0];
-move(tmp2,tmpheight,4);
+  move(buffer[offset],tmp1[0],4);
+  tmp2[0] := tmp1[3];
+  tmp2[1] := tmp1[2];
+  tmp2[2] := tmp1[1];
+  tmp2[3] := tmp1[0];
+  move(tmp2,tmpheight,4);
 
-if (tmpwidth>0) and (tmpheight>0) then begin
- fwidth := tmpwidth;
- fheight := tmpheight;
- //log('Width:'+inttostr(fwidth)+' Height:'+inttostr(fheight));
-end;
-
+  if (tmpwidth>0) and (tmpheight>0) then
+  begin
+    fwidth := tmpwidth;
+    fheight := tmpheight;
+    //log('Width:'+inttostr(fwidth)+' Height:'+inttostr(fheight));
+  end;
 end;
 
 procedure TMP4Parser.read_mvhd(lenAvailable: Cardinal);
 var
- buffer: array of Byte;
- offset: Integer;
- timeScale: Cardinal;
- duration: Cardinal;
- tmp1,tmp2: array [0..3] of Byte;
+  buffer: array of Byte;
+  offset: Integer;
+  timeScale: Cardinal;
+  duration: Cardinal;
+  tmp1,tmp2: array [0..3] of Byte;
 begin
-if lenAvailable<20 then exit;
-SetLength(buffer,lenAvailable);
-bufferHeader.read(buffer[0],lenAvailable);
+  if lenAvailable<20 then exit;
+  SetLength(buffer,lenAvailable);
+  bufferHeader.read(buffer[0],lenAvailable);
 
-offset := 4; //skip flags+version
-inc(offset,8); //skip creation time + modification time
-move(buffer[offset],tmp1[0],4);
-tmp2[0] := tmp1[3];
-tmp2[1] := tmp1[2];
-tmp2[2] := tmp1[1];
-tmp2[3] := tmp1[0];
-move(tmp2,timescale,4);
-inc(offset,4);
+  offset := 4; //skip flags+version
+  inc(offset,8); //skip creation time + modification time
+  move(buffer[offset],tmp1[0],4);
+  tmp2[0] := tmp1[3];
+  tmp2[1] := tmp1[2];
+  tmp2[2] := tmp1[1];
+  tmp2[3] := tmp1[0];
+  move(tmp2,timescale,4);
+  inc(offset,4);
 
-move(buffer[offset],tmp1[0],4);
-tmp2[0] := tmp1[3];
-tmp2[1] := tmp1[2];
-tmp2[2] := tmp1[1];
-tmp2[3] := tmp1[0];
-move(tmp2,duration,4);
+  move(buffer[offset],tmp1[0],4);
+  tmp2[0] := tmp1[3];
+  tmp2[1] := tmp1[2];
+  tmp2[2] := tmp1[1];
+  tmp2[3] := tmp1[0];
+  move(tmp2,duration,4);
 
-fduration := duration div timescale;
-//log('Duration:'+inttostr(fduration));
+  fduration := duration div timescale;
+  //log('Duration:'+inttostr(fduration));
 end;
-
-{function TMP4Parser.checkHasMDAT: Boolean;
-var
- atomHeader: array [0..7] of char;
- atomLenBuf: array [0..3] of char;
- lenAtom,currentPosition: Cardinal;
- atomName: string;
-begin
-result := False;
-//log('checkHasMDAT headersize:'+inttostr(bufferHeader.Size));
-//look for ftyp
-try
-bufferHeader.Seek(0,soFromBeginning);
-if bufferHeader.read(atomHeader,8)<>8 then exit;
-
- atomLenBuf[0] := atomHeader[3];
- atomLenBuf[1] := atomHeader[2];
- atomLenBuf[2] := atomHeader[1];
- atomLenBuf[3] := atomHeader[0];
- move(atomLenBuf,lenAtom,4);
-
-
- SetLength(atomName,4);
- move(atomHeader[4],atomName[1],4);
- if atomName<>'ftyp' then begin
-  error('checkHasMDAT ftyp not found!');
-  exit;
- end;
-
-
- //look for moov
-   if lenAtom+8>bufferHeader.size then exit;
-   currentPosition := lenAtom;
-   bufferHeader.Seek(currentPosition,soFromBeginning);
-   if bufferHeader.read(atomHeader,8)<>8 then exit;
-
-   atomLenBuf[0] := atomHeader[3];
-   atomLenBuf[1] := atomHeader[2];
-   atomLenBuf[2] := atomHeader[1];
-   atomLenBuf[3] := atomHeader[0];
-   move(atomLenBuf,lenAtom,4);
-
-
-
-   move(atomHeader[4],atomName[1],4);
-   if (atomName<>'moov') and (atomName<>'uuid') then begin
-
-   // if atomName='uuid' then begin //after effects?
-     //read_uuid(lenAtom-8);
-    // Result := True;
-    // startReading;
-    // exit;
-    //end else
-
-    error('checkHasMDAT moov not found! found:'+atomName);
-    exit;
-   end;
-
-   //look for mdat
-   if currentPosition+lenAtom+8>bufferHeader.size then exit;
-
-   inc(currentPosition,lenAtom);
-   bufferHeader.Seek(currentPosition,soFromBeginning);
-   if bufferHeader.read(atomHeader,8)<>8 then exit;
-
-   atomLenBuf[0] := atomHeader[3];
-   atomLenBuf[1] := atomHeader[2];
-   atomLenBuf[2] := atomHeader[1];
-   atomLenBuf[3] := atomHeader[0];
-   move(atomLenBuf,lenAtom,4);
-   move(atomHeader[4],atomName[1],4);
-
-   if atomName='free' then begin
-    inc(currentPosition,lenAtom);
-    bufferHeader.Seek(currentPosition,soFromBeginning);
-    if bufferHeader.read(atomHeader,8)<>8 then exit;
-       atomLenBuf[0] := atomHeader[3];
-       atomLenBuf[1] := atomHeader[2];
-       atomLenBuf[2] := atomHeader[1];
-       atomLenBuf[3] := atomHeader[0];
-       move(atomLenBuf,lenAtom,4);
-       move(atomHeader[4],atomName[1],4);
-   end;
-
-   if atomName<>'mdat' then begin
-    error('checkHasMDAT mdat not found!');
-    exit;
-   end;
-   offsetMDAT := currentPosition+8; //found it!
-   lenMDAT := lenAtom;
-  // beginningOfMemory := offsetMDAT;
-
-  // log('Found MDAT at '+inttostr(offsetMDAT)+
-  //    ' Size:'+inttostr(lenMDAT)+
-  //    ' DataComplete at '+inttostr(offsetMDAT+lenMDAT));
-    startReading;
-
-
-   Result := True;
-except
-end;
-
-end; }
 
 procedure TMP4Parser.startReading;
 begin
-bufferHeader.Seek(0,soFromBeginning);
-readAtom(nil,bufferHeader.size,0);
+  bufferHeader.Seek(0, soFromBeginning);
+  readAtom(nil, bufferHeader.size, 0);
 end;
 
 
@@ -6751,8 +6647,5 @@ begin
   MusicGenre[146] :=  'JPop';
   MusicGenre[147] :=  'Synthpop';
 end;
-
-
-
 
 end.

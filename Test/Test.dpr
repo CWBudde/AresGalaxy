@@ -4,14 +4,8 @@ uses
   Vcl.Forms,
   MainUnit in 'MainUnit.pas' {Form3},
   BDecode in '..\BitTorrent\BDecode.pas',
-(*
-  BitTorrentConst in '..\BitTorrent\BitTorrentConst.pas',
-  BitTorrentStringfunc in '..\BitTorrent\BitTorrentStringfunc.pas',
-  BitTorrentUtils in '..\BitTorrent\BitTorrentUtils.pas',
-*)
+  classes2 in '..\classes2.pas',
   dht_consts in '..\BitTorrent\dht_consts.pas',
-  dht_int160 in '..\BitTorrent\dht_int160.pas',
-  dht_routingbin in '..\BitTorrent\dht_routingbin.pas',
   dht_search in '..\BitTorrent\dht_search.pas',
   dht_searchManager in '..\BitTorrent\dht_searchManager.pas',
   dht_socket in '..\BitTorrent\dht_socket.pas',
@@ -20,7 +14,18 @@ uses
   thread_bitTorrent in '..\BitTorrent\thread_bitTorrent.pas',
   torrentparser in '..\BitTorrent\torrentparser.pas',
   helper_datetime in '..\helper_datetime.pas',
-  const_ares in '..\const_ares.pas';
+  const_ares in '..\const_ares.pas',
+  dht_int160 in '..\BitTorrent\dht_int160.pas',
+  helper_strings in '..\helper_strings.pas',
+  ares_types in '..\ares_types.pas',
+  ares_types_root in '..\ares_types_root.pas',
+  helper_urls in '..\helper_urls.pas',
+  helper_unicode in '..\helper_unicode.pas',
+  helpeR_ipfunc in '..\helpeR_ipfunc.pas',
+  helper_crypt in '..\helper_crypt.pas',
+  securehash in '..\securehash.pas',
+  umediar in '..\umediar.pas',
+  helper_diskio in '..\helper_diskio.pas';
 
 {$R *.res}
 

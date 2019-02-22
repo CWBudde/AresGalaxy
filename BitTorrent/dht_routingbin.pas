@@ -32,118 +32,120 @@ unit dht_routingbin;
 interface
 
 uses
- classes,classes2,dht_int160,dhtcontact,sysutils,windows,dht_consts;
+  Classes, SysUtils, Windows, Classes2, Dht_int160, Dht_Consts;
 
 type
-TMDHTRoutingBin = class(TObject)
- m_entries: TMylist;
- m_dontDeletecontacts: Boolean;
- constructor create;
- destructor destroy; override;
- function getContact(id:pCU_INT160): Tmdhtbucket;
- function add(contact: Tmdhtbucket): Boolean;
- function remove(contact: Tmdhtbucket): Boolean;
- procedure getEntries(list: TMylist; emptyFirst:boolean = false);
- function getOldest: Tmdhtbucket;
- function getClosestTo(maxType: Cardinal; target:pCU_INT160; maxRequired: Cardinal;
-  ContactMap: TMylist; emptyFirst:boolean=false; inUse:boolean=false): Cardinal;
- procedure setAlive(ip: Cardinal; port:word);
- procedure moveback(c: Tmdhtbucket);
- function FindHost(ip: Cardinal): Tmdhtbucket;
-end;
+  TMDHTRoutingBin = class(TObject)
+    m_entries: TMylist;
+    m_dontDeletecontacts: Boolean;
+    constructor create;
+    destructor destroy; override;
+    function getContact(id:pCU_INT160): Tmdhtbucket;
+    function add(contact: Tmdhtbucket): Boolean;
+    function remove(contact: Tmdhtbucket): Boolean;
+    procedure getEntries(list: TMylist; emptyFirst:boolean = false);
+    function getOldest: Tmdhtbucket;
+    function getClosestTo(maxType: Cardinal; target:pCU_INT160; maxRequired: Cardinal;
+      ContactMap: TMylist; emptyFirst:boolean=false; inUse:boolean=false): Cardinal;
+    procedure setAlive(ip: Cardinal; port:word);
+    procedure moveback(c: Tmdhtbucket);
+    function FindHost(ip: Cardinal): Tmdhtbucket;
+  end;
 
 implementation
 
 uses
- helpeR_ipfunc,thread_bittorrent;
+  helper_ipfunc, thread_bittorrent, DhtContact;
 
 function TMDHTRoutingBin.FindHost(ip: Cardinal): Tmdhtbucket;
 var
-i: Integer;
-c: Tmdhtbucket;
+  i: Integer;
+  c: Tmdhtbucket;
 begin
-result := nil;
-	if m_entries.count=0 then exit;
+  Result := nil;
+	if m_entries.count=0 then Exit;
 
-	for i := 0 to m_entries.count-1 do begin
-   c := m_entries[i];
-		if ip=c.ipC then begin
-     Result := c;
-     exit;
+	for i := 0 to m_entries.count-1 do
+  begin
+    c := m_entries[i];
+		if ip=c.ipC then
+    begin
+      Result := c;
+      Exit;
     end;
   end;
 end;
 
 procedure TMDHTRoutingBin.getEntries(list: TMylist; emptyFirst:boolean = false);
 var
-i: Integer;
-con: Tmdhtbucket;
+  i: Integer;
+  con: Tmdhtbucket;
 begin
+	if emptyFirst then
+    list.clear;
 
-	if emptyFirst then list.clear;
-
-	for i := 0 to m_entries.count-1 do begin
-   con := m_entries[i];
-   list.add(con);
+	for i := 0 to m_entries.count-1 do
+  begin
+    con := m_entries[i];
+    list.add(con);
   end;
-
 end;
 
 function TMDHTRoutingBin.getContact(id:pCU_INT160): Tmdhtbucket;
 var
-con: Tmdhtbucket;
-i: Integer;
+  con: Tmdhtbucket;
+  i: Integer;
 begin
-	result := nil;
+	Result := nil;
 
-	for i := 0 to m_entries.count-1 do begin
-     con := m_entries[i];
-     if con.ID[0]<>id[0] then continue;
-       if con.ID[1]<>id[1] then continue;
-        if con.ID[2]<>id[2] then continue;
-         if con.ID[3]<>id[3] then continue;
-          if con.ID[4]<>id[4] then continue;
+	for i := 0 to m_entries.count-1 do
+  begin
+    con := m_entries[i];
+    if con.ID[0]<>id[0] then continue;
+    if con.ID[1]<>id[1] then continue;
+    if con.ID[2]<>id[2] then continue;
+    if con.ID[3]<>id[3] then continue;
+    if con.ID[4]<>id[4] then continue;
 
-			result := con;
-			exit;
-
+    Result := con;
+		Exit;
 	end;
 
 end;
 
-procedure TMDHTRoutingBin.setAlive(ip: Cardinal; port:word);
+procedure TMDHTRoutingBin.setAlive(ip: Cardinal; port: Word);
 var
-c: Tmdhtbucket;
-i: Integer;
+  c: Tmdhtbucket;
+  i: Integer;
 begin
-	if m_entries.count=0 then exit;
+	if m_entries.count=0 then Exit;
 
-	for i := 0 to m_entries.count-1 do begin
+	for i := 0 to m_entries.count-1 do
+  begin
 		c := m_entries[i];
-		if ip=c.ipC then
-     if port=c.portW then begin
+		if (ip=c.ipC) and (port=c.portW) then
+    begin
+	 		c.updateType;
 
-			c.updateType;
-      
-			break;
-		 end;
- end;
-
+ 			break;
+		end;
+  end;
 end;
 
 function TMDHTRoutingBin.getClosestTo(maxType: Cardinal; target:pCU_INT160; maxRequired: Cardinal;
- ContactMap: TMylist; emptyFirst:boolean=false; inUse:boolean=false): Cardinal;
+  ContactMap: TMylist; emptyFirst:boolean=false; inUse:boolean=false): Cardinal;
 var
-i: Integer;
-con: Tmdhtbucket;
+  i: Integer;
+  con: Tmdhtbucket;
 begin
   Result := 0;
-	if m_entries.count=0 then exit;
+	if m_entries.count=0 then Exit;
 
 	if emptyFirst then ContactMap.clear;
 
 	//Put results in sort order for target.
-	for i := 0 to m_entries.count-1 do begin
+	for i := 0 to m_entries.count-1 do
+  begin
    con := m_entries[i];
 		if con.m_type>maxType then continue;
 
@@ -152,104 +154,105 @@ begin
 
 	end;
 
-  thread_bittorrent.mdht_sortCloserContacts(ContactMap,target);  //@contact.me
+  thread_bittorrent.mdht_sortCloserContacts(ContactMap, target);  //@contact.me
 
-  while (ContactMap.count>maxRequired) do begin
-   if inUse then begin
-    con := ContactMap[ContactMap.count-1];
-    dec(con.m_inuse);
-   end;
-   ContactMap.delete(ContactMap.count-1);  // delete extra results
+  while (ContactMap.count>maxRequired) do
+  begin
+    if inUse then
+    begin
+      con := ContactMap[ContactMap.count-1];
+      dec(con.m_inuse);
+    end;
+    ContactMap.delete(ContactMap.count-1);  // delete extra results
   end;
 
-	result := ContactMap.count;
+	Result := ContactMap.count;
 end;
 
 function TMDHTRoutingBin.remove(contact: Tmdhtbucket): Boolean;
 var
-ind: Integer;
+  ind: Integer;
 begin
-result := False;
+  Result := False;
 
-ind := m_entries.indexof(contact);
-if ind<>-1 then begin
- m_entries.delete(ind);
- Result := True;
-end;
-
+  ind := m_entries.indexof(contact);
+  if ind<>-1 then
+  begin
+    m_entries.delete(ind);
+    Result := True;
+  end;
 end;
 
 function TMDHTRoutingBin.add(contact: Tmdhtbucket): Boolean;
 var
-c: Tmdhtbucket;
+  c: Tmdhtbucket;
 begin
-result := False;
+  Result := False;
 
 	// If this is already in the entries list
 	c := getContact(@Contact.ID);
-	if (c<>nil) then begin
+	if (c<>nil) then
+  begin
 		// Move to the end of the list
-   moveback(c);
-		result := False;
-    exit;
+    moveback(c);
+		Result := False;
+    Exit;
 	end;
-		// If not full, add to end of list
 
-		if m_entries.count<MDHT_K8 then begin
+	// If not full, add to end of list
+  if m_entries.count<MDHT_K8 then
+  begin
 			m_entries.add(contact);
-			result := True;
+			Result := True;
       //outputdebugstring(PChar(formatdatetime('hh:nn:ss.zzz',now)+'> Adding bucket:'+CU_INT160_tohexstr(@contact.id,false)));
-		end else begin
-			result := False;  //bin full
-      
-		end;
-
-
-
+	end
+  else
+		Result := False;  //bin full
 end;
 
 procedure TMDHTRoutingBin.moveback(c: Tmdhtbucket);
 var
- ind: Integer;
+  ind: Integer;
 begin
-ind := m_entries.indexof(c);
+  ind := m_entries.indexof(c);
 
-if ind<>-1 then
- if ind<>m_entries.count-1 then begin
-  m_entries.delete(ind);
-  m_entries.add(c);
- end;
-
+  if (ind<>-1) and (ind<>m_entries.count-1) then
+  begin
+    m_entries.delete(ind);
+    m_entries.add(c);
+  end;
 end;
 
 
 function TMDHTRoutingBin.getOldest: Tmdhtbucket;
 begin
-	if m_entries.count>0 then Result := m_entries[0]
-   else Result := nil;
+	if m_entries.count>0 then
+    Result := m_entries[0]
+  else
+    Result := nil;
 end;
 
 constructor TMDHTRoutingBin.create;
 begin
-m_dontDeleteContacts := False;
-m_entries := Tmylist.create;
+  m_dontDeleteContacts := False;
+  m_entries := Tmylist.create;
 end;
 
 destructor TMDHTRoutingBin.destroy;
 var
-con: Tmdhtbucket;
+  con: Tmdhtbucket;
 begin
+  if not m_dontDeleteContacts then
+		while (m_entries.count>0) do
+    begin
+      con := m_entries[m_entries.count-1];
+      m_entries.delete(m_entries.count-1);
+      con.Free;
+    end;
 
-		if not m_dontDeleteContacts then
-			while (m_entries.count>0) do begin
-            con := m_entries[m_entries.count-1];
-                m_entries.delete(m_entries.count-1);
-            con.Free;
-		  end;
+  m_entries.Free;
 
-		m_entries.Free;
-
-inherited;
+  inherited;
 end;
 
 end.
