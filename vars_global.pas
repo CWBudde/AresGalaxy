@@ -27,12 +27,12 @@ unit vars_global;
 interface
 
 uses
- classes2,thread_terminator,DSPack,ufrmhint,classes,windows,graphics,
- ares_types,comettrees,tntmenus,thread_upload,thread_download,
- thread_client,thread_supernode,thread_share,int128,ares_objects,
- helper_autoscan,thread_dht,blcksock,synsock,dhtzones,
- dhttypes,thread_bittorrent,tntforms,forms,helper_channellist{,
- thread_webtorrent};
+  classes2,thread_terminator,DSPack,ufrmhint,classes,windows,graphics,
+  ares_types,comettrees,tntmenus,thread_upload,thread_download,
+  thread_client,thread_supernode,thread_share,int128,ares_objects,
+  helper_autoscan,thread_dht,blcksock,synsock,dhtzones,
+  dhttypes,thread_bittorrent,tntforms,forms,helper_channellist{,
+  thread_webtorrent};
 
 var
   COLOR_DL_COMPLETED,
